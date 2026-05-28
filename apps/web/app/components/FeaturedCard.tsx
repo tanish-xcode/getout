@@ -59,7 +59,7 @@ export default function FeaturedCard({ id, title, subtitle, location, date, pric
 
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
           <MetaChip icon={<Calendar size={12} />} text={date} />
-          <MetaChip icon={<MapPin size={12} />} text={location.split(",")[0]} />
+          <MetaChip icon={<MapPin size={12} />} text={location.split(",")[0]!} />
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>

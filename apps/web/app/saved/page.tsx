@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Heart, ArrowUpRight, MapPin } from "lucide-react";
 import { events } from "../data/events";
 
-const defaultSaved = [events[0]!.id, events[2]!.id, events[3]!.id];
+const defaultSaved = events.map((e) => e.id);
 
 export default function SavedPage() {
   const [savedIds, setSavedIds] = useState<string[]>(defaultSaved);
@@ -16,7 +16,7 @@ export default function SavedPage() {
   }
 
   return (
-    <div style={{ minHeight: "100svh", padding: "52px 20px 110px" }}>
+    <div className="page-root"><div className="page-narrow" style={{ padding: "52px 20px 0" }}>
       <h1 style={{ fontSize: 26, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", marginBottom: 4 }}>
         Saved
       </h1>
@@ -115,6 +115,6 @@ export default function SavedPage() {
           ))}
         </div>
       )}
-    </div>
+    </div></div>
   );
 }

@@ -164,7 +164,7 @@ input  { font-family: inherit; }
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 22s linear infinite;
+  animation: marquee 44s linear infinite;
 }
 .marquee-wrapper {
   overflow: hidden;
@@ -213,4 +213,241 @@ input  { font-family: inherit; }
 .dot-active {
   width: 20px;
   background: var(--color-accent);
+}
+
+/* ─── Page root (replaces inline paddingBottom: 110) ────────── */
+.page-root {
+  min-height: 100svh;
+  padding-bottom: 110px;
+}
+
+/* ─── Category card (icon block on mobile → filter chip on desktop) */
+.cat-card {
+  flex-shrink: 0;
+  width: 72px;
+  height: 82px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 160ms ease;
+  font-family: inherit;
+}
+.cat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Home hero title ─────────────────────────────────────────── */
+.home-hero-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+/* ─── Hero split (desktop: title+search left, event preview right) */
+.home-hero-inner { /* mobile: plain block */ }
+.home-hero-right { display: none; }
+
+/* ─── Home greeting row (mobile only) ────────────────────────── */
+.home-greeting {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* ─── Featured card link ──────────────────────────────────────── */
+.featured-card-link {
+  display: block;
+  text-decoration: none;
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  height: 340px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.50);
+}
+
+/* ─── Featured carousel outer padding ────────────────────────── */
+.featured-carousel-pad { padding: 0 20px; }
+
+/* ─── Popular section paddings ────────────────────────────────── */
+.popular-header-pad {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 14px;
+}
+.popular-list-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+/* ─── Explore event card ──────────────────────────────────────── */
+.explore-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  height: 220px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ─── Desktop / mobile visibility toggles ───────────────────── */
+.desktop-only { display: none !important; }
+.mobile-only  { display: block !important; }
+
+/* ─── Desktop layout (≥ 768px) ──────────────────────────────── */
+@media (min-width: 768px) {
+
+  /* Unlock mobile container */
+  .mobile-container {
+    max-width: none;
+  }
+
+  /* Show desktop nav, hide bottom nav */
+  .desktop-only { display: flex !important; }
+  .mobile-only  { display: none !important; }
+  .bottom-nav   { display: none !important; }
+
+  /* Top-nav offset for all page content */
+  .content-frame {
+    padding-top: 64px;
+  }
+
+  /* Page root on desktop — no bottom-nav space needed */
+  .page-root {
+    padding-bottom: 60px;
+  }
+
+  /* Standard desktop content container */
+  .dc {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+
+  /* Category chips — unwrap overflow on desktop */
+  .cats-row {
+    overflow: visible !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Explore events grid — desktop overrides (columns controlled by inline style) */
+  .events-grid {
+    display: grid !important;
+    gap: 20px !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Popular rows — 2 columns on desktop */
+  .popular-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Home main area — featured | popular side-by-side */
+  .home-main-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* Event detail — image | details two-column */
+  .event-detail-grid {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    min-height: calc(100vh - 64px);
+    align-items: start;
+    overflow: hidden;
+  }
+  .event-detail-image {
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow: hidden;
+  }
+  .event-detail-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .event-detail-image .event-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,14,0.20) 0%, rgba(10,10,14,0) 50%) !important;
+  }
+  .event-detail-scroll {
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding: 48px 48px 60px;
+    scrollbar-width: none;
+  }
+
+  /* Narrow centered pages (checkout, ticket detail, profile, saved) */
+  .page-narrow {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* Saved grid — 2 columns */
+  .saved-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ── Category filter chips ────────────────────────────── */
+  .cat-card {
+    width: auto;
+    height: 44px;
+    border-radius: 9999px;
+    padding: 0 20px;
+    flex-direction: row;
+    gap: 8px;
+  }
+  .cat-icon svg { width: 16px; height: 16px; }
+  .cat-label { font-size: 13px; }
+
+  /* ── Home page desktop overrides ─────────────────────── */
+  .home-hero-title { font-size: 52px; line-height: 1.0; }
+  .home-greeting   { display: none; }
+  .home-hero-inner {
+    display: grid;
+    grid-template-columns: 52% 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .home-hero-right { display: block; }
+
+  /* ── Featured card: taller on desktop ────────────────── */
+  .featured-card-link { height: 500px; }
+
+  /* ── Remove inner padding (dc handles outer 48px) ────── */
+  .featured-carousel-pad  { padding: 0; }
+  .popular-header-pad     { padding: 0 0 14px; }
+  .popular-list-pad       { padding: 0; }
+
+  /* ── Explore cards: taller on desktop ────────────────── */
+  .explore-card { height: 300px; }
 }

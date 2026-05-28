@@ -6,8 +6,7 @@ import SearchBar from "./SearchBar";
 import EventCard from "./EventCard";
 import { events, categories, getEventsByCategory } from "../data/events";
 
-const featured = events.filter((e) => e.featured || e.attendees > 5000).slice(0, 3);
-const popularThisWeek = [...events].sort((a, b) => b.attendees - a.attendees).slice(0, 4);
+const featured = events.filter((e) => e.featured);
 
 const categoryConfig: Record<string, { Icon: LucideIcon }> = {
   "All":         { Icon: LayoutGrid },
@@ -21,8 +20,7 @@ const categoryConfig: Record<string, { Icon: LucideIcon }> = {
 };
 
 const tickerItems = [
-  "50K+ MUSIC LOVERS", "LIVE EVENTS", "CONCERTS", "FESTIVALS",
-  "BOOK NOW", "NEW SHOWS", "SOLD OUT", "HOT PICKS", "NIGHTLIFE",
+  "LIVE EVENTS", "CONCERTS", "FESTIVALS", "HOT PICKS", "NIGHTLIFE",
 ];
 
 export default function HomeContent() {
@@ -37,15 +35,16 @@ export default function HomeContent() {
         e.city.toLowerCase().includes(search.toLowerCase())
   );
 
-  const upcoming = filtered.filter((e) => !e.featured).slice(0, 6);
+  const popularThisWeek = [...filtered].sort((a, b) => b.attendees - a.attendees);
 
   return (
-    <div style={{ minHeight: "100svh", paddingBottom: 110 }}>
+    <div className="page-root">
 
       {/* ── Header ─────────────────────────────────────────── */}
-      <div style={{ padding: "56px 20px 0" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-          {/* Greeting */}
+      <div className="dc" style={{ padding: "56px 20px 0" }}>
+
+        {/* Mobile-only greeting row */}
+        <div className="home-greeting">
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
               <MapPin size={11} strokeWidth={2} color="var(--color-accent)" />
@@ -58,15 +57,13 @@ export default function HomeContent() {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <button
-              style={{
-                width: 40, height: 40, borderRadius: 9999,
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid var(--color-border)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer", position: "relative",
-              }}
-            >
+            <button className="mobile-only" style={{
+              width: 40, height: 40, borderRadius: 9999,
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid var(--color-border)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", position: "relative",
+            }}>
               <Bell size={18} color="var(--color-text-secondary)" strokeWidth={1.8} />
               <span style={{
                 position: "absolute", top: 8, right: 8, width: 7, height: 7,
@@ -74,82 +71,94 @@ export default function HomeContent() {
                 border: "1.5px solid var(--color-bg-base)",
               }} />
             </button>
-            <Link
-              href="/profile"
-              style={{
-                width: 40, height: 40, borderRadius: 9999,
-                background: "linear-gradient(135deg, #F26B3A, #FF8A5C)",
-                border: "2px solid rgba(242,107,58,0.40)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 14, fontWeight: 800, color: "#fff",
-                textDecoration: "none",
-                boxShadow: "0 0 16px rgba(242,107,58,0.35)",
-              }}
-            >
-              T
-            </Link>
+            <Link className="mobile-only" href="/profile" style={{
+              width: 40, height: 40, borderRadius: 9999,
+              background: "linear-gradient(135deg, #F26B3A, #FF8A5C)",
+              border: "2px solid rgba(242,107,58,0.40)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 14, fontWeight: 800, color: "#fff",
+              textDecoration: "none",
+              boxShadow: "0 0 16px rgba(242,107,58,0.35)",
+            }}>T</Link>
           </div>
         </div>
 
-        {/* Hero title */}
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
-          <h1 style={{
-            fontSize: 36, fontWeight: 800, color: "#fff",
-            lineHeight: 1.1, letterSpacing: "-0.035em",
-          }}>
-            <span style={{ fontStyle: "italic", color: "var(--color-accent)" }}>Discover</span>
-            <br />What&apos;s Happening
-          </h1>
-          <p style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 500, marginTop: 6 }}>
-            {events.length} events · {new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
-          </p>
-        </div>
+        {/* Desktop hero split: left = title+search, right = event preview card */}
+        <div className="home-hero-inner">
 
-        {/* Search */}
-        <SearchBar value={search} onChange={setSearch} />
+          {/* Left: title + search */}
+          <div>
+            <div style={{ marginBottom: 20 }}>
+              <h1 className="home-hero-title">
+                <span style={{ fontStyle: "italic", color: "var(--color-accent)" }}>Discover</span>
+                <br />What&apos;s Happening
+              </h1>
+              <p style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 500, marginTop: 6 }}>
+                {events.length} events · {new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
+              </p>
+            </div>
+            <SearchBar value={search} onChange={setSearch} />
+          </div>
+
+          {/* Right: featured event preview (desktop-only) */}
+          <div className="home-hero-right">
+            {featured[0] && (
+              <Link
+                href={`/events/${featured[0].id}`}
+                style={{ display: "block", textDecoration: "none" }}
+              >
+                <div style={{
+                  position: "relative", borderRadius: 24, overflow: "hidden",
+                  height: 260,
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
+                }}>
+                  <img
+                    src={featured[0].image} alt={featured[0].title}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to bottom, rgba(10,10,14,0.10) 0%, rgba(10,10,14,0) 35%, rgba(10,10,14,0.88) 100%)",
+                  }} />
+                  {/* Tag */}
+                  <div style={{ position: "absolute", top: 14, left: 14 }}>
+                    <span style={{
+                      background: "var(--color-accent)", borderRadius: 9999,
+                      padding: "4px 12px", fontSize: 10, fontWeight: 800,
+                      color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
+                    }}>{featured[0].tag}</span>
+                  </div>
+                  {/* Bottom */}
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px 18px" }}>
+                    <p style={{
+                      fontSize: 16, fontWeight: 800, color: "#fff",
+                      lineHeight: 1.25, marginBottom: 10, letterSpacing: "-0.02em",
+                    }}>
+                      {featured[0].title}
+                    </p>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.70)", fontWeight: 600 }}>
+                        📅 {featured[0].date} · {featured[0].city}
+                      </span>
+                      <span style={{
+                        background: "var(--color-accent)", color: "#fff",
+                        borderRadius: 9999, padding: "6px 16px",
+                        fontSize: 12, fontWeight: 800,
+                        boxShadow: "0 0 16px rgba(242,107,58,0.50)",
+                      }}>
+                        {featured[0].price}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )}
+          </div>
+
+        </div>{/* end home-hero-inner */}
       </div>
 
-      {/* ── Category icon cards ────────────────────────────── */}
-      <div style={{
-        display: "flex", gap: 10, overflowX: "auto",
-        padding: "20px 20px 4px", scrollbarWidth: "none",
-      }}>
-        {categories.map((cat) => {
-          const { Icon } = categoryConfig[cat];
-          const isActive = activeCategory === cat;
-          return (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              style={{
-                flexShrink: 0, width: 72, height: 82,
-                borderRadius: 18,
-                background: isActive ? "var(--color-accent)" : "var(--color-bg-card)",
-                border: isActive ? "none" : "1px solid var(--color-border-subtle)",
-                display: "flex", flexDirection: "column",
-                alignItems: "center", justifyContent: "center", gap: 8,
-                cursor: "pointer",
-                transition: "all 160ms ease",
-                transform: isActive ? "scale(1.06)" : "scale(1)",
-                boxShadow: isActive ? "0 0 22px rgba(242,107,58,0.45)" : "none",
-              }}
-            >
-              <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : "var(--color-text-secondary)"} />
-              <span style={{
-                fontSize: 10, fontWeight: 700, letterSpacing: "0.01em",
-                color: isActive ? "#fff" : "var(--color-text-muted)",
-              }}>{cat}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* ── Featured carousel ──────────────────────────────── */}
-      <div style={{ marginTop: 20, }}>
-        <FeaturedCarousel items={featured} activeIdx={featuredIdx} onDotClick={setFeaturedIdx} />
-      </div>
-
-      {/* ── Marquee ticker ─────────────────────────────────── */}
+      {/* ── Marquee ticker ─────────────────────────────────────── */}
       <div style={{
         marginTop: 20,
         background: "var(--color-accent)",
@@ -158,7 +167,7 @@ export default function HomeContent() {
       }}>
         <div className="marquee-wrapper">
           <div className="marquee-track">
-            {[...tickerItems, ...tickerItems].map((item, i) => (
+            {[...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
               <span key={i} style={{
                 fontSize: 11, fontWeight: 800, color: "#fff",
                 textTransform: "uppercase", letterSpacing: "0.08em",
@@ -173,91 +182,108 @@ export default function HomeContent() {
         </div>
       </div>
 
-      {/* ── Popular This Week (list rows) ──────────────────── */}
-      <section style={{ marginTop: 28, }}>
-        <div style={{ padding: "0 20px", marginBottom: 14 }}>
-          <SectionHeader title="Popular This Week" href="/explore" />
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, padding: "0 20px" }}>
-          {popularThisWeek.map((event, i) => (
-            <Link key={event.id} href={`/events/${event.id}`} className="popular-row">
-              {/* Rank */}
-              <span style={{
-                fontSize: 13, fontWeight: 800,
-                color: i === 0 ? "var(--color-accent)" : "var(--color-text-muted)",
-                width: 20, flexShrink: 0, textAlign: "center",
-              }}>
-                {i + 1}
+      {/* ── Category icon cards ──────────────────────────────── */}
+      <div className="dc cats-row" style={{
+        display: "flex", gap: 10,
+        overflowX: "auto", padding: "20px 20px 4px",
+        scrollbarWidth: "none",
+      }}>
+        {categories.map((cat) => {
+          const { Icon } = categoryConfig[cat]!;
+          const isActive = activeCategory === cat;
+          return (
+            <button
+              key={cat}
+              className="cat-card"
+              onClick={() => setActiveCategory(cat)}
+              style={{
+                background: isActive ? "var(--color-accent)" : "var(--color-bg-card)",
+                border: isActive ? "none" : "1px solid var(--color-border-subtle)",
+                transform: isActive ? "scale(1.06)" : "scale(1)",
+                boxShadow: isActive ? "0 0 22px rgba(242,107,58,0.45)" : "none",
+              }}
+            >
+              <span className="cat-icon">
+                <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : "var(--color-text-secondary)"} />
               </span>
+              <span className="cat-label" style={{ color: isActive ? "#fff" : "var(--color-text-muted)" }}>
+                {cat}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-              {/* Thumbnail */}
-              <div style={{
-                width: 52, height: 52, borderRadius: 12,
-                overflow: "hidden", flexShrink: 0,
-                border: "1px solid var(--color-border-subtle)",
-              }}>
-                <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
+      {/* ── Main content: Featured + Popular ─────────────────── */}
+      <div className="dc home-main-grid" style={{ marginTop: 20 }}>
 
-              {/* Info */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{
-                  fontSize: 13, fontWeight: 700, color: "#fff",
-                  overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                  marginBottom: 3,
-                }}>
-                  {event.title}
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                  <MapPin size={10} color="var(--color-text-muted)" strokeWidth={2} />
-                  <span style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 500 }}>
-                    {event.location.split(",")[0]}
+        {/* Featured carousel */}
+        <div>
+          <FeaturedCarousel items={featured} activeIdx={featuredIdx} onDotClick={setFeaturedIdx} />
+        </div>
+
+        {/* Popular This Week */}
+        <section>
+          <div className="popular-header-pad">
+            <SectionHeader title="Popular This Week" href="/explore" />
+          </div>
+          {filtered.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "40px 20px" }}>
+              <p style={{ fontSize: 15, color: "var(--color-text-muted)", fontWeight: 600 }}>No events found</p>
+              <p style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 6 }}>Try a different search or category</p>
+            </div>
+          ) : (
+            <div className="popular-list-pad">
+              {popularThisWeek.map((event, i) => (
+                <Link key={event.id} href={`/events/${event.id}`} className="popular-row">
+                  <span style={{
+                    fontSize: 13, fontWeight: 800,
+                    color: i === 0 ? "var(--color-accent)" : "var(--color-text-muted)",
+                    width: 20, flexShrink: 0, textAlign: "center",
+                  }}>
+                    {i + 1}
                   </span>
-                </div>
-              </div>
-
-              {/* Date pill */}
-              <div style={{
-                background: "var(--color-accent-dim)",
-                border: "1px solid var(--color-border-active)",
-                borderRadius: 9999,
-                padding: "4px 10px",
-                fontSize: 10, fontWeight: 700, color: "var(--color-accent)",
-                whiteSpace: "nowrap", flexShrink: 0,
-              }}>
-                {event.date.split(" ").slice(0, 2).join(" ")}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Upcoming Events (cards) ────────────────────────── */}
-      {upcoming.length > 0 && (
-        <section style={{ marginTop: 32, }}>
-          <div style={{ padding: "0 20px", marginBottom: 14 }}>
-            <SectionHeader title="Upcoming Events" href="/explore" />
-          </div>
-          <div className="events-row">
-            {upcoming.map((event) => (
-              <EventCard key={event.id} {...event} />
-            ))}
-          </div>
+                  <div style={{
+                    width: 52, height: 52, borderRadius: 12,
+                    overflow: "hidden", flexShrink: 0,
+                    border: "1px solid var(--color-border-subtle)",
+                  }}>
+                    <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{
+                      fontSize: 13, fontWeight: 700, color: "#fff",
+                      overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                      marginBottom: 3,
+                    }}>{event.title}</p>
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <MapPin size={10} color="var(--color-text-muted)" strokeWidth={2} />
+                      <span style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 500 }}>
+                        {event.location.split(",")[0]}
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{
+                    background: "var(--color-accent-dim)",
+                    border: "1px solid var(--color-border-active)",
+                    borderRadius: 9999, padding: "4px 10px",
+                    fontSize: 10, fontWeight: 700, color: "var(--color-accent)",
+                    whiteSpace: "nowrap", flexShrink: 0,
+                  }}>
+                    {event.date.split(" ").slice(0, 2).join(" ")}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
-      )}
+      </div>
 
-      {/* ── Empty state ────────────────────────────────────── */}
-      {filtered.length === 0 && (
-        <div style={{ textAlign: "center", padding: "60px 20px", }}>
-          <p style={{ fontSize: 16, color: "var(--color-text-muted)", fontWeight: 600 }}>No events found</p>
-          <p style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 6 }}>Try a different search or category</p>
-        </div>
-      )}
     </div>
   );
 }
 
-/* ── Featured Carousel ─────────────────────────────────────── */
+/* ── Featured Carousel ───────────────────────────────────────── */
 function FeaturedCarousel({
   items,
   activeIdx,
@@ -271,23 +297,16 @@ function FeaturedCarousel({
   if (!event) return null;
 
   return (
-    <div style={{ padding: "0 20px" }}>
+    <div className="featured-carousel-pad">
       <Link
         href={`/events/${event.id}`}
-        className="pressable"
-        style={{
-          display: "block", textDecoration: "none",
-          position: "relative", borderRadius: "var(--radius-card)",
-          overflow: "hidden", height: 340,
-          boxShadow: "0 8px 40px rgba(0,0,0,0.50)",
-        }}
+        className="pressable featured-card-link"
       >
         <img
           src={event.image}
           alt={event.title}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
         />
-        {/* Gradient overlay */}
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(to bottom, rgba(10,10,14,0) 0%, rgba(10,10,14,0.50) 40%, rgba(10,10,14,0.97) 100%)",
@@ -299,9 +318,7 @@ function FeaturedCarousel({
             background: "var(--color-accent)", borderRadius: 9999,
             padding: "4px 12px", fontSize: 10, fontWeight: 800,
             color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
-          }}>
-            {event.tag}
-          </span>
+          }}>{event.tag}</span>
           <span style={{
             background: "rgba(10,10,14,0.65)", backdropFilter: "blur(8px)",
             border: "1px solid var(--color-border)",
@@ -315,7 +332,6 @@ function FeaturedCarousel({
 
         {/* Bottom */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px 18px 18px" }}>
-          {/* Attendees */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
             <AvatarStack count={4} />
             <span style={{
@@ -326,15 +342,10 @@ function FeaturedCarousel({
               {event.attendees.toLocaleString()}+ attending
             </span>
           </div>
-
           <h2 style={{
             fontSize: 22, fontWeight: 800, color: "#fff",
             lineHeight: 1.2, letterSpacing: "-0.025em", marginBottom: 12,
-          }}>
-            {event.title}
-          </h2>
-
-          {/* Meta + CTA */}
+          }}>{event.title}</h2>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", gap: 8 }}>
               <MetaPill icon="📍" text={event.city} />
@@ -353,20 +364,19 @@ function FeaturedCarousel({
         </div>
       </Link>
 
-      {/* Carousel dots */}
-      <div style={{
-        display: "flex", justifyContent: "center",
-        gap: 6, marginTop: 14,
-      }}>
-        {items.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => onDotClick(i)}
-            className={`dot ${i === activeIdx ? "dot-active" : ""}`}
-            style={{ border: "none", cursor: "pointer", padding: 0 }}
-          />
-        ))}
-      </div>
+      {/* Dots */}
+      {items.length > 1 && (
+        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 14 }}>
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => onDotClick(i)}
+              className={`dot ${i === activeIdx ? "dot-active" : ""}`}
+              style={{ border: "none", cursor: "pointer", padding: 0 }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -401,7 +411,7 @@ function AvatarStack({ count }: { count: number }) {
 
 function SectionHeader({ title, href }: { title: string; href: string }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
       <h2 style={{ fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>{title}</h2>
       <Link href={href} style={{
         fontSize: 12, fontWeight: 600, color: "var(--color-accent)",

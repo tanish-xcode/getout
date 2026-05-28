@@ -19,7 +19,7 @@ const menuItems = [
 
 export default function ProfilePage() {
   return (
-    <div style={{ minHeight: "100svh", padding: "52px 20px 110px" }}>
+    <div className="page-root"><div className="page-narrow" style={{ padding: "52px 20px 0" }}>
       {/* Avatar + name */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 32 }}>
         <div
@@ -67,7 +67,7 @@ export default function ProfilePage() {
 
       {/* Recent ticket preview */}
       <div style={{ marginBottom: 24 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-secondary)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.06em", fontSize: 11 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-secondary)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.06em" }}>
           Recent Ticket
         </p>
         <Link
@@ -135,6 +135,6 @@ export default function ProfilePage() {
         <p style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 600 }}>Get Out · v1.0.0</p>
         <p style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 4 }}>Made with 🧡 for event lovers</p>
       </div>
-    </div>
+    </div></div>
   );
 }

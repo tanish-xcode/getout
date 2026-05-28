@@ -29,18 +29,16 @@ export default function ExplorePage() {
   );
 
   return (
-    <div style={{ minHeight: "100svh", padding: "52px 0 110px" }}>
+    <div className="page-root" style={{ padding: "52px 0 0" }}>
+
       {/* Header */}
-      <div style={{ padding: "0 20px", marginBottom: 20 }}>
+      <div className="dc" style={{ padding: "0 20px", marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-          <Link
-            href="/"
-            style={{
-              width: 40, height: 40, borderRadius: 9999,
-              background: "var(--color-bg-surface)", border: "1px solid var(--color-border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}
-          >
+          <Link className="mobile-only" href="/" style={{
+            width: 40, height: 40, borderRadius: 9999,
+            background: "var(--color-bg-surface)", border: "1px solid var(--color-border)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
             <ArrowLeft size={18} color="#fff" strokeWidth={2} />
           </Link>
           <h1 style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>Explore</h1>
@@ -49,59 +47,55 @@ export default function ExplorePage() {
       </div>
 
       {/* Category icon cards */}
-      <div style={{ display: "flex", gap: 10, overflowX: "auto", padding: "0 20px 16px", scrollbarWidth: "none" }}>
+      <div className="dc cats-row" style={{
+        display: "flex", gap: 10,
+        overflowX: "auto", padding: "0 20px 16px",
+        scrollbarWidth: "none",
+      }}>
         {categories.map((cat) => {
-          const { Icon } = categoryConfig[cat];
+          const { Icon } = categoryConfig[cat]!;
           const isActive = activeCategory === cat;
           return (
             <button
               key={cat}
+              className="cat-card"
               onClick={() => setActiveCategory(cat)}
               style={{
-                flexShrink: 0, width: 72, height: 82,
-                borderRadius: 18,
                 background: isActive ? "var(--color-accent)" : "var(--color-bg-card)",
                 border: isActive ? "none" : "1px solid var(--color-border-subtle)",
-                display: "flex", flexDirection: "column",
-                alignItems: "center", justifyContent: "center", gap: 8,
-                cursor: "pointer",
-                transition: "all 160ms ease",
                 transform: isActive ? "scale(1.06)" : "scale(1)",
                 boxShadow: isActive ? "0 0 22px rgba(242,107,58,0.45)" : "none",
               }}
             >
-              <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : "var(--color-text-secondary)"} />
-              <span style={{
-                fontSize: 10, fontWeight: 700, letterSpacing: "0.01em",
-                color: isActive ? "#fff" : "var(--color-text-muted)",
-              }}>{cat}</span>
+              <span className="cat-icon">
+                <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : "var(--color-text-secondary)"} />
+              </span>
+              <span className="cat-label" style={{ color: isActive ? "#fff" : "var(--color-text-muted)" }}>
+                {cat}
+              </span>
             </button>
           );
         })}
       </div>
 
       {/* Results count */}
-      <div style={{ padding: "0 20px", marginBottom: 16 }}>
+      <div className="dc" style={{ padding: "0 20px", marginBottom: 16 }}>
         <p style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 500 }}>
           {filtered.length} event{filtered.length !== 1 ? "s" : ""} found
         </p>
       </div>
 
-      {/* Grid — 2 columns */}
+      {/* Events grid — 2 cols mobile, 3 cols desktop */}
       {filtered.length > 0 ? (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, padding: "0 20px" }}>
+        <div className="dc events-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 12,
+          padding: "0 20px",
+        }}>
           {filtered.map((event) => (
             <Link key={event.id} href={`/events/${event.id}`} style={{ display: "block", textDecoration: "none" }}>
-              <div
-                className="pressable"
-                style={{
-                  position: "relative",
-                  borderRadius: "var(--radius-card)",
-                  overflow: "hidden",
-                  height: 220,
-                  boxShadow: "var(--shadow-card)",
-                }}
-              >
+              <div className="pressable explore-card">
                 <img src={event.image} alt={event.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                 <div className="gradient-card" style={{ position: "absolute", inset: 0 }} />
                 <div style={{ position: "absolute", top: 10, left: 10 }}>
@@ -120,7 +114,7 @@ export default function ExplorePage() {
           ))}
         </div>
       ) : (
-        <div style={{ textAlign: "center", padding: "60px 20px" }}>
+        <div className="dc" style={{ textAlign: "center", padding: "60px 20px" }}>
           <p style={{ fontSize: 16, color: "var(--color-text-muted)", fontWeight: 600 }}>No events found</p>
           <p style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 6 }}>Try a different filter or search term</p>
         </div>
