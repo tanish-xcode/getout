@@ -4,16 +4,18 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Share2, Calendar, Clock, MapPin, User } from "lucide-react";
 import { getTicketById, type SavedTicket } from "../../lib/tickets";
+import { useAuth } from "../../components/AuthProvider";
 
 export default function TicketDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const [ticket, setTicket] = useState<SavedTicket | null>(null);
   const [loaded, setLoaded]  = useState(false);
 
   useEffect(() => {
-    setTicket(getTicketById(id) ?? null);
+    setTicket(getTicketById(id, user?.email) ?? null);
     setLoaded(true);
-  }, [id]);
+  }, [id, user]);
 
   if (!loaded) return null;
 

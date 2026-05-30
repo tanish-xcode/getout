@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "eventzo-web",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["/tmp/eventzo-proxy.js"],
+      "port": 3001
+    }
+  ]
+}

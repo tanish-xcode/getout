@@ -17,24 +17,26 @@ export type SavedTicket = {
   attendeeName: string;
 };
 
-const KEY = "getout_tickets";
+function storageKey(email?: string | null) {
+  return email ? `getout_tickets_${email}` : "getout_tickets";
+}
 
-export function getAllTickets(): SavedTicket[] {
+export function getAllTickets(email?: string | null): SavedTicket[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(localStorage.getItem(KEY) || "[]");
+    return JSON.parse(localStorage.getItem(storageKey(email)) || "[]");
   } catch {
     return [];
   }
 }
 
-export function getTicketById(id: string): SavedTicket | undefined {
-  return getAllTickets().find((t) => t.id === id);
+export function getTicketById(id: string, email?: string | null): SavedTicket | undefined {
+  return getAllTickets(email).find((t) => t.id === id);
 }
 
-export function saveTicket(ticket: SavedTicket): void {
-  const all = getAllTickets().filter((t) => t.id !== ticket.id);
-  localStorage.setItem(KEY, JSON.stringify([ticket, ...all]));
+export function saveTicket(ticket: SavedTicket, email?: string | null): void {
+  const all = getAllTickets(email).filter((t) => t.id !== ticket.id);
+  localStorage.setItem(storageKey(email), JSON.stringify([ticket, ...all]));
 }
 
 export function generateTicketId(): string {

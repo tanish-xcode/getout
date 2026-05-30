@@ -13,6 +13,7 @@
   "dependencies": {
     "@repo/ui": "*",
     "@tailwindcss/postcss": "^4.3.0",
+    "firebase": "^12.14.0",
     "lucide-react": "^1.16.0",
     "next": "16.2.0",
     "postcss": "^8.5.15",

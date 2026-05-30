@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Check, Minus, Plus, Zap, MapPin, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Check, Minus, Plus, Zap, MapPin, Calendar, LogIn } from "lucide-react";
 import { getEventById } from "../../data/events";
 import { saveTicket, generateTicketId, type SavedTicket } from "../../lib/tickets";
+import { useAuth } from "../../components/AuthProvider";
 
 const TICKET_TYPES = [
   { label: "General Entry", desc: "Access to all sessions",           multiplier: 1.0 },
@@ -15,11 +16,32 @@ const TICKET_TYPES = [
 export default function CheckoutPage() {
   const { id: eventId } = useParams<{ id: string }>();
   const router = useRouter();
+  const { user } = useAuth();
   const event = getEventById(eventId);
 
   const [typeIdx, setTypeIdx]     = useState(0);
   const [quantity, setQuantity]   = useState(1);
   const [confirming, setConfirming] = useState(false);
+
+  const isBhajan = eventId === "bhajan-clubbing-night";
+  const embedRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isBhajan || !embedRef.current) return;
+    const script = document.createElement("script");
+    script.src = "https://eventdesk.app/embed.js";
+    script.setAttribute("data-url", "https://eventdesk.app/events/bhajan-clubbing/register?embed&tickets=cec88f7e-7552-4a44-b92a-6be011182258&pbg=transparent&cbg=transparent&sbg=transparent&tcbg=transparent&etcol=fffafa&mtcol=fffafa&tctcol=ffffff&bcol=fd8d0d");
+    script.setAttribute("data-page-bg",       "transparent");
+    script.setAttribute("data-card-bg",       "transparent");
+    script.setAttribute("data-summary-bg",    "transparent");
+    script.setAttribute("data-ticket-card-bg","transparent");
+    script.setAttribute("data-event-text-color", "fffafa");
+    script.setAttribute("data-main-text-color",  "fffafa");
+    script.setAttribute("data-card-text-color",  "ffffff");
+    script.setAttribute("data-btn-color",     "fd8d0d");
+    embedRef.current.appendChild(script);
+    return () => { script.remove(); };
+  }, [isBhajan]);
 
   if (!event) {
     return (
@@ -36,6 +58,7 @@ export default function CheckoutPage() {
   const ev = event;
 
   function handleConfirm() {
+    if (!user) { router.push("/sign-in"); return; }
     setConfirming(true);
     const ticketId = generateTicketId();
     const ticket: SavedTicket = {
@@ -54,9 +77,9 @@ export default function CheckoutPage() {
       unitPrice,
       totalPrice:    total,
       purchasedAt:   new Date().toISOString(),
-      attendeeName:  "Tanish Reddy",
+      attendeeName:  user.name,
     };
-    saveTicket(ticket);
+    saveTicket(ticket, user.email);
     router.push(`/tickets/${ticketId}`);
   }
 
@@ -228,71 +251,76 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* ── EventDesk Widget slot ──────────────────────────────────────────────
-            TODO: Replace this placeholder with EventDesk's embed code.
-            Once integrated, EventDesk will handle payment collection and
-            trigger onSuccess with booking data — then call saveTicket() and
-            router.push(`/tickets/${ticketId}`) from that callback.
-
-            Example integration shape:
-              <EventDeskWidget
-                eventId="<your-eventdesk-event-id>"
-                quantity={quantity}
-                ticketType={TICKET_TYPES[typeIdx].label}
-                onSuccess={(booking) => {
-                  saveTicket({ ...booking, attendeeName: "Tanish Reddy" });
-                  router.push(`/tickets/${booking.id}`);
-                }}
-              />
-
-            Remove the mock confirm button below once EventDesk is live.
-        ──────────────────────────────────────────────────────────────────────── */}
-        <div style={{
-          background: "rgba(242,107,58,0.05)",
-          border: "1.5px dashed var(--color-border-active)",
-          borderRadius: "var(--radius-xl)",
-          padding: "18px 20px",
-          marginBottom: 20,
-          display: "flex", alignItems: "center", gap: 12,
-        }}>
+        {/* ── Checkout ── */}
+        {isBhajan ? (
+          <div ref={embedRef} style={{ marginBottom: 20 }} />
+        ) : (
           <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: "var(--color-accent-dim)",
-            border: "1px solid var(--color-border-active)",
-            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            background: "rgba(242,107,58,0.05)",
+            border: "1.5px dashed var(--color-border-active)",
+            borderRadius: "var(--radius-xl)",
+            padding: "18px 20px",
+            marginBottom: 20,
+            display: "flex", alignItems: "center", gap: 12,
           }}>
-            <Zap size={16} color="var(--color-accent)" strokeWidth={2} />
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: "var(--color-accent-dim)",
+              border: "1px solid var(--color-border-active)",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>
+              <Zap size={16} color="var(--color-accent)" strokeWidth={2} />
+            </div>
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "var(--color-accent)" }}>EventDesk Payment</p>
+              <p style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 1, lineHeight: 1.4 }}>
+                Secure checkout widget loads here after integration
+              </p>
+            </div>
           </div>
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "var(--color-accent)" }}>EventDesk Payment</p>
-            <p style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 1, lineHeight: 1.4 }}>
-              Secure checkout widget loads here after integration
-            </p>
-          </div>
+        )}
+
+      </div>
+
+      {/* ── Sign-in nudge (non-bhajan only) ── */}
+      {!isBhajan && !user && (
+        <div style={{ padding: "0 20px 16px" }}>
+          <Link href="/sign-in" style={{
+            width: "100%", height: 52, borderRadius: 16,
+            background: "var(--color-accent)",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            fontSize: 15, fontWeight: 800, color: "#fff",
+            textDecoration: "none",
+            boxShadow: "0 0 28px rgba(242,107,58,0.40)",
+          }}>
+            <LogIn size={18} strokeWidth={2} />
+            Sign In to Book
+          </Link>
+          <p style={{ textAlign: "center", fontSize: 12, color: "var(--color-text-muted)", marginTop: 8 }}>
+            You need an account to save your tickets
+          </p>
         </div>
+      )}
 
-      </div>
-
-      {/* ── Confirm button (mock — remove once EventDesk is live) ── */}
-      <div style={{ padding: "0 20px 40px" }}>
-        <button
-          onClick={handleConfirm}
-          disabled={confirming}
-          style={{
-            width: "100%", border: "none", cursor: confirming ? "default" : "pointer",
-            background: confirming ? "var(--color-bg-card)" : "var(--color-accent)",
-            color: "#fff", borderRadius: 9999, padding: "16px",
-            fontSize: 15, fontWeight: 700,
-            boxShadow: confirming ? "none" : "0 0 28px rgba(242,107,58,0.40)",
-            transition: "all 200ms ease",
-          }}
-        >
-          {confirming ? "Processing…" : `Confirm & Get Tickets · ₹${total.toLocaleString("en-IN")}`}
-        </button>
-        <p style={{ textAlign: "center", fontSize: 11, color: "var(--color-text-muted)", marginTop: 10 }}>
-          Mock checkout — EventDesk handles real payments
-        </p>
-      </div>
+      {/* ── Mock confirm (non-bhajan only) ── */}
+      {!isBhajan && (
+        <div style={{ padding: "0 20px 40px" }}>
+          <button
+            onClick={handleConfirm}
+            disabled={confirming}
+            style={{
+              width: "100%", border: "none", cursor: confirming ? "default" : "pointer",
+              background: confirming ? "var(--color-bg-card)" : "var(--color-accent)",
+              color: "#fff", borderRadius: 9999, padding: "16px",
+              fontSize: 15, fontWeight: 700,
+              boxShadow: confirming ? "none" : "0 0 28px rgba(242,107,58,0.40)",
+              transition: "all 200ms ease",
+            }}
+          >
+            {confirming ? "Processing…" : `Confirm & Get Tickets · ₹${total.toLocaleString("en-IN")}`}
+          </button>
+        </div>
+      )}
       </div>{/* end page-narrow */}
     </div>
   );

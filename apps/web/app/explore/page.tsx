@@ -6,15 +6,17 @@ import EventCard from "../components/EventCard";
 import SearchBar from "../components/SearchBar";
 import { events, categories, getEventsByCategory } from "../data/events";
 
-const categoryConfig: Record<string, { Icon: LucideIcon }> = {
-  "All":         { Icon: LayoutGrid },
-  "Concerts":    { Icon: Mic2 },
-  "Festivals":   { Icon: Sparkles },
-  "Comedy":      { Icon: Smile },
-  "Nightlife":   { Icon: Moon },
-  "Conferences": { Icon: Lightbulb },
-  "Dining":      { Icon: UtensilsCrossed },
-  "Sports":      { Icon: Trophy },
+type CatConfig = { Icon: LucideIcon; color: string; glow: string };
+
+const categoryConfig: Record<string, CatConfig> = {
+  "All":         { Icon: LayoutGrid,     color: "#F26B3A", glow: "rgba(242,107,58,0.45)"  },
+  "Concerts":    { Icon: Mic2,           color: "#8B5CF6", glow: "rgba(139,92,246,0.45)"  },
+  "Festivals":   { Icon: Sparkles,       color: "#EC4899", glow: "rgba(236,72,153,0.45)"  },
+  "Comedy":      { Icon: Smile,          color: "#F59E0B", glow: "rgba(245,158,11,0.45)"  },
+  "Nightlife":   { Icon: Moon,           color: "#6366F1", glow: "rgba(99,102,241,0.45)"  },
+  "Conferences": { Icon: Lightbulb,      color: "#3B82F6", glow: "rgba(59,130,246,0.45)"  },
+  "Dining":      { Icon: UtensilsCrossed,color: "#10B981", glow: "rgba(16,185,129,0.45)"  },
+  "Sports":      { Icon: Trophy,         color: "#EF4444", glow: "rgba(239,68,68,0.45)"   },
 };
 
 export default function ExplorePage() {
@@ -36,12 +38,12 @@ export default function ExplorePage() {
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
           <Link className="mobile-only" href="/" style={{
             width: 40, height: 40, borderRadius: 9999,
-            background: "var(--color-bg-surface)", border: "1px solid var(--color-border)",
+            background: "var(--color-bg-card)", border: "1px solid var(--color-border)",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            <ArrowLeft size={18} color="#fff" strokeWidth={2} />
+            <ArrowLeft size={18} color="var(--color-text-primary)" strokeWidth={2} />
           </Link>
-          <h1 style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>Explore</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 800, color: "var(--color-text-primary)", letterSpacing: "-0.02em" }}>Explore</h1>
         </div>
         <SearchBar value={search} onChange={setSearch} />
       </div>
@@ -53,7 +55,7 @@ export default function ExplorePage() {
         scrollbarWidth: "none",
       }}>
         {categories.map((cat) => {
-          const { Icon } = categoryConfig[cat]!;
+          const { Icon, color, glow } = categoryConfig[cat]!;
           const isActive = activeCategory === cat;
           return (
             <button
@@ -61,14 +63,14 @@ export default function ExplorePage() {
               className="cat-card"
               onClick={() => setActiveCategory(cat)}
               style={{
-                background: isActive ? "var(--color-accent)" : "var(--color-bg-card)",
+                background: isActive ? color : "var(--color-bg-card)",
                 border: isActive ? "none" : "1px solid var(--color-border-subtle)",
                 transform: isActive ? "scale(1.06)" : "scale(1)",
-                boxShadow: isActive ? "0 0 22px rgba(242,107,58,0.45)" : "none",
+                boxShadow: isActive ? `0 0 22px ${glow}` : "none",
               }}
             >
               <span className="cat-icon">
-                <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : "var(--color-text-secondary)"} />
+                <Icon size={24} strokeWidth={1.8} color={isActive ? "#fff" : color} />
               </span>
               <span className="cat-label" style={{ color: isActive ? "#fff" : "var(--color-text-muted)" }}>
                 {cat}
