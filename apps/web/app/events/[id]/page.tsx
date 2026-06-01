@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Calendar, Clock, Users, Share2, Bookmark, Heart, ArrowRight } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Clock, Share2, Bookmark, Heart, ArrowRight } from "lucide-react";
 import { getEventById, events } from "../../data/events";
 
 export function generateStaticParams() {
@@ -141,78 +141,23 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </p>
           </div>
 
-          {/* People interested strip */}
-          <div style={{
-            background: "var(--color-bg-surface)",
-            border: "1px solid var(--color-border-subtle)",
-            borderRadius: "var(--radius-xl)",
-            padding: "14px 16px",
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            marginBottom: 20,
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ position: "relative" }}>
-                <AvatarStack count={4} />
-                {/* Bold count badge overlapping the stack */}
-                <div style={{
-                  position: "absolute", top: -6, right: -8,
-                  background: "var(--color-accent)",
-                  borderRadius: 9999, padding: "2px 6px",
-                  fontSize: 9, fontWeight: 800, color: "#fff",
-                  border: "1.5px solid var(--color-bg-surface)",
-                  whiteSpace: "nowrap",
-                }}>
-                  {event.attendees >= 1000 ? `${(event.attendees / 1000).toFixed(1)}k+` : `${event.attendees}+`}
-                </div>
-              </div>
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)" }}>People Interested</p>
-                <p style={{ fontSize: 11, color: "var(--color-text-muted)" }}>Be part of this event</p>
-              </div>
-            </div>
-            <div style={{
-              background: "var(--color-accent-dim)",
-              border: "1px solid var(--color-border-active)",
-              borderRadius: 9999, padding: "6px 14px",
-              fontSize: 11, fontWeight: 700, color: "var(--color-accent)",
-            }}>
-              Join
-            </div>
-          </div>
-
-          {/* Map placeholder */}
+          {/* Map — real Google Maps embed */}
           <div style={{
             borderRadius: "var(--radius-xl)", overflow: "hidden",
-            height: 140,
-            background: "var(--color-bg-surface)",
+            height: 200,
             border: "1px solid var(--color-border-subtle)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            marginBottom: 28, position: "relative",
+            marginBottom: 28,
           }}>
-            <div style={{ position: "absolute", inset: 0, opacity: 0.10 }}>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} style={{ position: "absolute", left: 0, right: 0, top: `${i * 20}%`, height: 1, background: "var(--color-text-secondary)" }} />
-              ))}
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${i * 20}%`, width: 1, background: "var(--color-text-secondary)" }} />
-              ))}
-            </div>
-            <div style={{
-              width: 44, height: 44, borderRadius: 9999,
-              background: "var(--color-accent)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 0 8px rgba(242,107,58,0.20)", zIndex: 1,
-            }}>
-              <MapPin size={20} color="#fff" strokeWidth={2.5} />
-            </div>
-            <div style={{
-              position: "absolute", bottom: 12, left: 16,
-              background: "var(--color-bg-card)", border: "1px solid var(--color-border)",
-              borderRadius: "var(--radius)", padding: "6px 12px",
-              fontSize: 12, fontWeight: 600, color: "var(--color-text-primary)",
-            }}>
-              {event.location}
-            </div>
+            <iframe
+              title="Event location"
+              width="100%"
+              height="100%"
+              style={{ border: 0, display: "block" }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location + ", " + event.city)}&output=embed&z=15`}
+            />
           </div>
 
         </div>{/* end event-detail-scroll */}
@@ -294,17 +239,3 @@ function MetaBox({ icon, label, value }: { icon: React.ReactNode; label: string;
   );
 }
 
-function AvatarStack({ count }: { count: number }) {
-  const colors = ["#6366F1", "#F26B3A", "#22C55E", "#EC4899"];
-  return (
-    <div className="avatar-stack">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} style={{
-          width: 28, height: 28, borderRadius: 9999,
-          background: colors[i % colors.length],
-          border: "2px solid var(--color-bg-surface)", flexShrink: 0,
-        }} />
-      ))}
-    </div>
-  );
-}
