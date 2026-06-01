@@ -28,24 +28,6 @@ export default function FeaturedCard({ id, title, subtitle, location, date, pric
         }}
       />
 
-      {/* Attendees top-left */}
-      <div style={{ position: "absolute", top: 16, left: 16, display: "flex", alignItems: "center", gap: 6 }}>
-        <AvatarStack count={4} />
-        <span
-          style={{
-            fontSize: 12,
-            color: "rgba(255,255,255,0.85)",
-            fontWeight: 600,
-            background: "rgba(10,10,14,0.50)",
-            backdropFilter: "blur(6px)",
-            padding: "3px 10px",
-            borderRadius: 9999,
-          }}
-        >
-          {attendees.toLocaleString()}+ attending
-        </span>
-      </div>
-
       {/* Bottom */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px" }}>
         {subtitle && (
@@ -109,27 +91,6 @@ function MetaChip({ icon, text }: { icon: React.ReactNode; text: string }) {
     >
       {icon}
       <span style={{ fontSize: 12, fontWeight: 600 }}>{text}</span>
-    </div>
-  );
-}
-
-function AvatarStack({ count }: { count: number }) {
-  const colors = ["#6366F1", "#F26B3A", "#22C55E", "#EC4899"];
-  return (
-    <div className="avatar-stack">
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            width: 26,
-            height: 26,
-            borderRadius: 9999,
-            background: colors[i % colors.length],
-            border: "2px solid rgba(10,10,14,0.80)",
-            flexShrink: 0,
-          }}
-        />
-      ))}
     </div>
   );
 }

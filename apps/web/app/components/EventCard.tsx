@@ -72,13 +72,6 @@ export default function EventCard({ id, title, location, date, image, attendees 
 
       {/* Bottom */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px 14px 14px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-          <AvatarStack count={3} />
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.70)", fontWeight: 500 }}>
-            {attendees.toLocaleString()}+ going
-          </span>
-        </div>
-
         <p
           style={{
             fontSize: 15,
@@ -117,26 +110,5 @@ export default function EventCard({ id, title, location, date, image, attendees 
         </div>
       </div>
     </Link>
-  );
-}
-
-function AvatarStack({ count }: { count: number }) {
-  const colors = ["#6366F1", "#F26B3A", "#22C55E"];
-  return (
-    <div className="avatar-stack">
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: 9999,
-            background: colors[i % colors.length],
-            border: "2px solid rgba(10,10,14,0.80)",
-            flexShrink: 0,
-          }}
-        />
-      ))}
-    </div>
   );
 }
