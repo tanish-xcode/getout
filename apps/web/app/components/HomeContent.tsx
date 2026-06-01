@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Bell, MapPin, ChevronRight, ArrowUpRight,
+  MapPin, ChevronRight, ArrowUpRight,
   LayoutGrid, Mic2, Sparkles, Smile, Moon, Lightbulb, UtensilsCrossed, Trophy,
   Sun, type LucideIcon,
 } from "lucide-react";
@@ -92,22 +92,6 @@ export default function HomeContent() {
                   : <Sun  size={17} color="var(--color-text-secondary)" strokeWidth={2} />
                 }
               </span>
-            </button>
-
-            {/* Notification bell */}
-            <button type="button" style={{
-              width: 40, height: 40, borderRadius: 9999,
-              background: "var(--color-bg-card)",
-              border: "1px solid var(--color-border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", position: "relative",
-            }}>
-              <Bell size={18} color="var(--color-text-secondary)" strokeWidth={1.8} />
-              <span style={{
-                position: "absolute", top: 7, right: 7, width: 7, height: 7,
-                borderRadius: 9999, background: "var(--color-accent)",
-                border: isLight ? "1.5px solid #FFF9F6" : "1.5px solid #0A0A0E",
-              }} />
             </button>
 
             {/* Profile avatar */}
