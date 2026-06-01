@@ -91,7 +91,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           <p style={{ fontSize: 12, color: "var(--color-text-muted)", fontWeight: 500, marginBottom: 6 }}>
             {event.organizer}
           </p>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-primary)", lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--color-text-primary)", lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
             {event.title}
           </h1>
 

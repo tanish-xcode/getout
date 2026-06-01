@@ -313,6 +313,11 @@ input  { font-family: inherit; }
   padding-bottom: 110px;
 }
 
+/* ─── Event detail scroll — mobile padding ───────────────────── */
+.event-detail-scroll {
+  padding: 20px 20px 0;
+}
+
 /* ─── Category card (icon block on mobile → filter chip on desktop) */
 .cat-card {
   flex-shrink: 0;
