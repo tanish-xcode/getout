@@ -30,22 +30,48 @@ const tickerItems = [
   "LIVE EVENTS", "CONCERTS", "FESTIVALS", "HOT PICKS", "NIGHTLIFE",
 ];
 
+type SortOption = "date" | "price-asc" | "price-desc";
+type DateFilter = "any" | "this-week" | "this-month";
+type PriceFilter = "any" | "free" | "under-500" | "under-1000" | "under-2000";
+
 export default function HomeContent() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const [animKey, setAnimKey] = useState<string | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  // Filter state
+  const [sortBy,      setSortBy]      = useState<SortOption>("date");
+  const [dateFilter,  setDateFilter]  = useState<DateFilter>("any");
+  const [priceFilter, setPriceFilter] = useState<PriceFilter>("any");
+
   const { theme, toggle } = useTheme();
   const { user } = useAuth();
   const displayName = user ? user.name.split(" ")[0] : "Guest";
   const initials    = user ? user.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase() : "?";
 
-  const filtered = getEventsByCategory(activeCategory).filter((e) =>
-    search.trim() === ""
-      ? true
-      : e.title.toLowerCase().includes(search.toLowerCase()) ||
-        e.city.toLowerCase().includes(search.toLowerCase())
-  );
+  const activeFilterCount = (sortBy !== "date" ? 1 : 0) + (dateFilter !== "any" ? 1 : 0) + (priceFilter !== "any" ? 1 : 0);
+
+  const filtered = getEventsByCategory(activeCategory)
+    .filter((e) =>
+      search.trim() === ""
+        ? true
+        : e.title.toLowerCase().includes(search.toLowerCase()) ||
+          e.city.toLowerCase().includes(search.toLowerCase())
+    )
+    .filter((e) => {
+      if (priceFilter === "free")        return e.priceNum === 0;
+      if (priceFilter === "under-500")   return e.priceNum < 500;
+      if (priceFilter === "under-1000")  return e.priceNum < 1000;
+      if (priceFilter === "under-2000")  return e.priceNum < 2000;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-asc")  return a.priceNum - b.priceNum;
+      if (sortBy === "price-desc") return b.priceNum - a.priceNum;
+      return 0;
+    });
 
   const popularThisWeek = [...filtered].sort((a, b) => b.attendees - a.attendees);
 
@@ -53,6 +79,12 @@ export default function HomeContent() {
     setActiveCategory(cat);
     setAnimKey(cat);
     setTimeout(() => setAnimKey(null), 500);
+  }
+
+  function resetFilters() {
+    setSortBy("date");
+    setDateFilter("any");
+    setPriceFilter("any");
   }
 
   const isLight = theme === "light";
@@ -122,7 +154,7 @@ export default function HomeContent() {
                 {events.length} events · {new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
               </p>
             </div>
-            <SearchBar value={search} onChange={setSearch} />
+            <SearchBar value={search} onChange={setSearch} onFilterOpen={() => setFilterOpen(true)} activeFilterCount={activeFilterCount} />
           </div>
 
           {/* Right: featured event preview (desktop-only) */}
@@ -308,7 +340,97 @@ export default function HomeContent() {
         </section>
       </div>
 
+      {/* ── Filter Bottom Sheet ──────────────────────────────────── */}
+      {filterOpen && (
+        <>
+          {/* Backdrop */}
+          <div onClick={() => setFilterOpen(false)} style={{
+            position: "fixed", inset: 0, zIndex: 80,
+            background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)",
+          }} />
+
+          {/* Sheet */}
+          <div style={{
+            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 90,
+            background: "var(--color-bg-surface)",
+            borderRadius: "24px 24px 0 0",
+            padding: "0 20px 40px",
+            boxShadow: "0 -8px 40px rgba(0,0,0,0.30)",
+            maxWidth: 480, margin: "0 auto",
+          }}>
+            {/* Handle */}
+            <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 4px" }}>
+              <div style={{ width: 36, height: 4, borderRadius: 9999, background: "var(--color-border)" }} />
+            </div>
+
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, marginTop: 8 }}>
+              <p style={{ fontSize: 17, fontWeight: 800, color: "var(--color-text-primary)", letterSpacing: "-0.02em" }}>Filter & Sort</p>
+              {activeFilterCount > 0 && (
+                <button onClick={resetFilters} style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontSize: 13, fontWeight: 600, color: "var(--color-accent)", fontFamily: "inherit",
+                }}>Reset all</button>
+              )}
+            </div>
+
+            {/* Sort by */}
+            <FilterSection label="Sort by">
+              {(["date", "price-asc", "price-desc"] as SortOption[]).map((opt) => (
+                <FilterChip key={opt} active={sortBy === opt} onClick={() => setSortBy(opt)}>
+                  {opt === "date" ? "Date" : opt === "price-asc" ? "Price: Low → High" : "Price: High → Low"}
+                </FilterChip>
+              ))}
+            </FilterSection>
+
+            {/* Price */}
+            <FilterSection label="Price">
+              {(["any", "free", "under-500", "under-1000", "under-2000"] as PriceFilter[]).map((opt) => (
+                <FilterChip key={opt} active={priceFilter === opt} onClick={() => setPriceFilter(opt)}>
+                  {opt === "any" ? "Any" : opt === "free" ? "Free" : opt === "under-500" ? "Under ₹500" : opt === "under-1000" ? "Under ₹1,000" : "Under ₹2,000"}
+                </FilterChip>
+              ))}
+            </FilterSection>
+
+            {/* Apply button */}
+            <button onClick={() => setFilterOpen(false)} style={{
+              width: "100%", height: 52, borderRadius: 16,
+              background: "var(--color-accent)", border: "none",
+              fontSize: 15, fontWeight: 800, color: "#fff",
+              cursor: "pointer", fontFamily: "inherit",
+              boxShadow: "0 0 24px rgba(242,107,58,0.40)",
+              marginTop: 8,
+            }}>
+              Show {filtered.length} event{filtered.length !== 1 ? "s" : ""}
+            </button>
+          </div>
+        </>
+      )}
+
     </div>
+  );
+}
+
+function FilterSection({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>{label}</p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{children}</div>
+    </div>
+  );
+}
+
+function FilterChip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: "8px 16px", borderRadius: 9999, cursor: "pointer",
+      fontFamily: "inherit", fontSize: 13, fontWeight: 600,
+      background: active ? "var(--color-accent)" : "var(--color-bg-card)",
+      color: active ? "#fff" : "var(--color-text-secondary)",
+      border: active ? "1.5px solid var(--color-accent)" : "1px solid var(--color-border)",
+      transition: "all 150ms ease",
+      boxShadow: active ? "0 0 12px rgba(242,107,58,0.30)" : "none",
+    }}>{children}</button>
   );
 }
 
