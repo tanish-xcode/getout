@@ -417,6 +417,12 @@ input  { font-family: inherit; }
   box-shadow: var(--shadow-card-hover);
 }
 
+/* ─── Desktop quick filters ──────────────────────────────────── */
+.desktop-quick-filters { display: none; }
+
+/* ─── Site footer ────────────────────────────────────────────── */
+.site-footer { display: none; }
+
 /* ─── Desktop / mobile visibility toggles ───────────────────── */
 .desktop-only { display: none !important; }
 .mobile-only  { display: block !important; }
@@ -560,4 +566,33 @@ input  { font-family: inherit; }
 
   /* ── Explore cards: taller on desktop ────────────────── */
   .explore-card { height: 300px; }
+
+  /* ── Explore grid: 3 columns on desktop ──────────────── */
+  .events-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+
+  /* ── Desktop quick filters ───────────────────────────── */
+  .desktop-quick-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 16px 0 4px;
+  }
+
+  /* ── Site footer ─────────────────────────────────────── */
+  .site-footer {
+    display: block;
+    border-top: 1px solid var(--color-border-subtle);
+    margin-top: 48px;
+    padding: 24px 0 32px;
+  }
+  .footer-inner {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 }

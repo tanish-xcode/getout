@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import BottomNav from "./components/BottomNav";
 import DesktopNav from "./components/DesktopNav";
+import Footer from "./components/Footer";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { AuthProvider } from "./components/AuthProvider";
 
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <div className="content-frame" style={{ position: "relative", zIndex: 1 }}>
               {children}
+              <Footer />
               <BottomNav />
             </div>
           </div>

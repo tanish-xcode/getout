@@ -53,6 +53,22 @@ export default function HomeContent() {
 
   const activeFilterCount = (sortBy !== "date" ? 1 : 0) + (dateFilter !== "any" ? 1 : 0) + (priceFilter !== "any" ? 1 : 0);
 
+  // Derive which quick-filter chip is active from existing filter state
+  const activeQuickFilter =
+    priceFilter === "any"       && dateFilter === "any"       ? "all" :
+    priceFilter === "any"       && dateFilter === "this-week" ? "weekend" :
+    priceFilter === "free"      && dateFilter === "any"       ? "free" :
+    priceFilter === "under-500" && dateFilter === "any"       ? "u500" :
+    priceFilter === "under-1000"&& dateFilter === "any"       ? "u1000" : null;
+
+  function applyQuickFilter(qf: string) {
+    if (qf === "all")     { setPriceFilter("any");        setDateFilter("any"); }
+    if (qf === "weekend") { setPriceFilter("any");        setDateFilter("this-week"); }
+    if (qf === "free")    { setPriceFilter("free");       setDateFilter("any"); }
+    if (qf === "u500")    { setPriceFilter("under-500");  setDateFilter("any"); }
+    if (qf === "u1000")   { setPriceFilter("under-1000"); setDateFilter("any"); }
+  }
+
   const filtered = getEventsByCategory(activeCategory)
     .filter((e) =>
       search.trim() === ""
@@ -277,11 +293,39 @@ export default function HomeContent() {
         })}
       </div>
 
+      {/* ── Quick filters — desktop only ──────────────────────── */}
+      <div className="dc desktop-quick-filters">
+        {[
+          { label: "All Events",    qf: "all"     },
+          { label: "This Weekend",  qf: "weekend" },
+          { label: "Free Entry",    qf: "free"    },
+          { label: "Under ₹500",   qf: "u500"    },
+          { label: "Under ₹1,000", qf: "u1000"   },
+        ].map(({ label, qf }) => {
+          const active = activeQuickFilter === qf;
+          return (
+            <button key={qf} onClick={() => applyQuickFilter(qf)} style={{
+              padding: "7px 18px", borderRadius: 9999,
+              fontSize: 12, fontWeight: 600,
+              background: active ? "var(--color-accent)" : "var(--color-bg-card)",
+              color: active ? "#fff" : "var(--color-text-secondary)",
+              border: active ? "1.5px solid var(--color-accent)" : "1px solid var(--color-border)",
+              cursor: "pointer", transition: "all 150ms ease", fontFamily: "inherit",
+              boxShadow: active ? "0 0 14px rgba(242,107,58,0.35)" : "none",
+              whiteSpace: "nowrap",
+            }}>{label}</button>
+          );
+        })}
+      </div>
+
       {/* ── Main content: Featured + Popular ─────────────────── */}
       <div className="dc home-main-grid" style={{ marginTop: 20 }}>
 
         {/* Featured carousel */}
         <div>
+          <div className="popular-header-pad">
+            <SectionHeader title="Featured Events" href="/explore" />
+          </div>
           <FeaturedCarousel items={featured} activeIdx={featuredIdx} onDotClick={setFeaturedIdx} />
         </div>
 
@@ -317,13 +361,22 @@ export default function HomeContent() {
                     <p style={{
                       fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)",
                       overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                      marginBottom: 3,
+                      marginBottom: 4,
                     }}>{event.title}</p>
-                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "nowrap" }}>
                       <MapPin size={10} color="var(--color-text-muted)" strokeWidth={2} />
-                      <span style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 500 }}>
+                      <span style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {event.location.split(",")[0]}
                       </span>
+                      {event.category !== "All" && (
+                        <span style={{
+                          fontSize: 9, fontWeight: 700,
+                          color: categoryConfig[event.category]?.color ?? "var(--color-accent)",
+                          background: `${categoryConfig[event.category]?.color ?? "#F26B3A"}22`,
+                          borderRadius: 9999, padding: "1px 7px",
+                          textTransform: "uppercase", letterSpacing: "0.04em", flexShrink: 0,
+                        }}>{event.category}</span>
+                      )}
                     </div>
                   </div>
                   <div style={{
@@ -341,6 +394,47 @@ export default function HomeContent() {
           )}
         </section>
       </div>
+
+      {/* ── Also in Hyderabad ────────────────────────────────────── */}
+      {events.filter(e => !e.featured).length > 0 && (
+        <div className="dc" style={{ marginTop: 36 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, padding: "0 20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 3, height: 20, borderRadius: 9999, background: "var(--color-accent)", boxShadow: "0 0 10px rgba(242,107,58,0.55)", flexShrink: 0 }} />
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "var(--color-text-primary)", letterSpacing: "-0.02em" }}>Also in Hyderabad</h2>
+            </div>
+            <Link href="/explore" style={{ fontSize: 12, fontWeight: 600, color: "var(--color-accent)", display: "flex", alignItems: "center", gap: 2, textDecoration: "none" }}>
+              View All <ChevronRight size={12} strokeWidth={2.5} />
+            </Link>
+          </div>
+          <div style={{ display: "flex", gap: 14, overflowX: "auto", padding: "4px 20px 12px", scrollbarWidth: "none" }}>
+            {events.filter(e => !e.featured).map(event => (
+              <Link key={event.id} href={`/events/${event.id}`} style={{ display: "block", textDecoration: "none", flexShrink: 0, width: 200 }}>
+                <div className="pressable" style={{ position: "relative", borderRadius: 16, overflow: "hidden", height: 148, boxShadow: "var(--shadow-card)" }}>
+                  <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 25%, rgba(10,10,14,0.92) 100%)" }} />
+                  <div style={{ position: "absolute", top: 8, left: 8 }}>
+                    <span style={{
+                      fontSize: 8, fontWeight: 800, color: "#fff",
+                      background: categoryConfig[event.category]?.color ?? "var(--color-accent)",
+                      borderRadius: 9999, padding: "2px 8px",
+                      textTransform: "uppercase", letterSpacing: "0.06em",
+                    }}>{event.tag}</span>
+                  </div>
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 12px" }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "#fff", lineHeight: 1.3, marginBottom: 3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {event.title}
+                    </p>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>
+                      {event.price} · {event.date.split(" ").slice(0, 2).join(" ")}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Filter Bottom Sheet ──────────────────────────────────── */}
       {filterOpen && (

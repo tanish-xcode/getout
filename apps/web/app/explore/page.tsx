@@ -94,6 +94,7 @@ export default function ExplorePage() {
           gridTemplateColumns: "1fr 1fr",
           gap: 12,
           padding: "0 20px",
+          paddingBottom: 20,
         }}>
           {filtered.map((event) => (
             <Link key={event.id} href={`/events/${event.id}`} style={{ display: "block", textDecoration: "none" }}>
