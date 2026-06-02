@@ -43,7 +43,7 @@ export const events: Event[] = [
   {
     id: "bhajan-clubbing-night",
     title: "Bhajan Clubbing Night",
-    subtitle: "Sacred Bass · Nightlife",
+    subtitle: "Kirtan · Electronic Bass · Nightlife",
     location: "10D The Club, Jubilee Hills",
     city: "Hyderabad",
     date: "21 June 2026",
@@ -54,7 +54,7 @@ export const events: Event[] = [
     attendees: 1800,
     tag: "Nightlife",
     category: "Nightlife",
-    description: "Where devotion meets the dancefloor. Hyderabad's most unique night out fuses classic bhajans with deep electronic beats — your gods are watching and they want you to dance. Dress code: sacred chaos.",
+    description: "Close your eyes. Is that a tabla or a kick drum? At Bhajan Clubbing Night, ancient devotion and deep electronic sound collapse into one unforgettable experience. Classic kirtans ride pulsing basslines, sacred hymns hit on the drop, and for one night only, 10D The Club becomes a temple. Your gods approve. Dress code: sacred chaos.",
     organizer: "Get Out",
     featured: true,
     seats: "General Entry",
