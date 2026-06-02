@@ -50,7 +50,7 @@ export const events: Event[] = [
     time: "10:00 PM",
     price: "₹1,200",
     priceNum: 1200,
-    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80",
+    image: "/bhajan-clubbing.jpg",
     attendees: 1800,
     tag: "Nightlife",
     category: "Nightlife",
