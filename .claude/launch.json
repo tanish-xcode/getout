@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "web",
-      "runtimeExecutable": "/usr/local/bin/node",
-      "runtimeArgs": ["/Users/tanishreddy/Desktop/eventzo/node_modules/next/dist/bin/next", "dev", "--port", "3000"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
       "cwd": "/Users/tanishreddy/Desktop/eventzo/apps/web",
       "port": 3000
     }

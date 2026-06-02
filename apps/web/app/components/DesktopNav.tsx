@@ -54,13 +54,21 @@ export default function DesktopNav() {
           <img
             src="/logo.png"
             alt="Get Out"
-            style={{ height: 30, width: "auto", display: "block" }}
+            style={{ height: 40, width: "auto", display: "block" }}
           />
-          <span style={{
-            fontSize: 16, fontWeight: 800,
-            color: "var(--color-text-primary)",
-            letterSpacing: "-0.03em",
-          }}>Get Out</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <span style={{
+              fontSize: 16, fontWeight: 800,
+              color: "var(--color-text-primary)",
+              letterSpacing: "-0.03em", lineHeight: 1,
+            }}>Get Out</span>
+            <span style={{
+              fontSize: 8.5, fontWeight: 700,
+              color: "var(--color-text-muted)",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase", lineHeight: 1,
+            }}>An ASBL Initiative</span>
+          </div>
         </Link>
 
         {/* ── Nav links ─────────────────────────────────────── */}

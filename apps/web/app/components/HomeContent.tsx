@@ -95,17 +95,19 @@ export default function HomeContent() {
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="dc" style={{ padding: "56px 20px 0" }}>
 
-        {/* Mobile-only greeting row */}
+        {/* Mobile-only header row — logo left, actions right */}
         <div className="home-greeting">
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-              <MapPin size={11} strokeWidth={2} color="var(--color-accent)" />
-              <p style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 500 }}>Hyderabad, India</p>
-              <ChevronRight size={11} color="var(--color-text-muted)" />
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Get Out" style={{ height: 34, width: "auto", display: "block" }} />
+            <div>
+              <p style={{ fontSize: 15, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1 }}>
+                Get Out
+              </p>
+              <p style={{ fontSize: 8.5, fontWeight: 700, color: "var(--color-text-muted)", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1, marginTop: 3 }}>
+                An ASBL Initiative
+              </p>
             </div>
-            <p style={{ fontSize: 13, color: "var(--color-text-secondary)", fontWeight: 500 }}>
-              Hey, {displayName} 👋
-            </p>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
