@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Calendar, Clock, Share2, Bookmark, Heart, ArrowRight } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Clock, Share2, Bookmark, Heart, ArrowRight, Users, Ticket, Layers } from "lucide-react";
 import { getEventById, events } from "../../data/events";
 
 export function generateStaticParams() {
@@ -12,8 +12,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const event = getEventById(id);
   if (!event) notFound();
 
+  const subtitleChips = event.subtitle.split(" · ");
+  const firstPeriod   = event.description.indexOf(". ");
+  const pullQuote     = firstPeriod !== -1 ? event.description.slice(0, firstPeriod + 1) : "";
+  const bodyText      = firstPeriod !== -1 ? event.description.slice(firstPeriod + 2) : event.description;
+
   return (
-    /* extra bottom padding on mobile to clear the sticky CTA bar */
     <div className="page-root" style={{ paddingBottom: 0 }}>
       <div className="event-detail-grid">
 
@@ -32,7 +36,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             }}
           />
 
-          {/* Back & Share */}
+          {/* Back & actions */}
           <div style={{ position: "absolute", top: 52, left: 20, right: 20, display: "flex", justifyContent: "space-between" }}>
             <Link href="/" style={{
               width: 40, height: 40, borderRadius: 9999,
@@ -62,7 +66,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
 
-          {/* Tag — mobile */}
+          {/* Tag chip — mobile only, bottom-left of image */}
           <div className="mobile-only" style={{
             position: "absolute", bottom: 20, left: 20,
             background: "var(--color-accent)", borderRadius: 9999,
@@ -74,40 +78,82 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
 
         {/* ── Right: Details ────────────────────────────────── */}
-        {/* mobile: paddingBottom clears the sticky CTA bar */}
         <div className="event-detail-scroll" style={{ paddingBottom: 108 }}>
 
-          {/* Tag — desktop */}
-          <div className="desktop-only" style={{
-            marginBottom: 16,
-            background: "var(--color-accent)", borderRadius: 9999,
-            padding: "4px 14px", fontSize: 11, fontWeight: 700,
-            color: "#fff", textTransform: "uppercase", letterSpacing: "0.06em",
-            width: "fit-content",
-          }}>
-            {event.tag}
+          {/* ① Organizer badge + tag pill */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: 8,
+                background: "var(--color-accent)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+              }}>
+                <span style={{ fontSize: 8, fontWeight: 800, color: "#fff", letterSpacing: "0.02em" }}>GO</span>
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--color-text-muted)" }}>{event.organizer}</span>
+            </div>
+            <div style={{
+              background: "var(--color-accent-dim)",
+              border: "1px solid var(--color-border-active)",
+              borderRadius: 9999, padding: "3px 12px",
+              fontSize: 10, fontWeight: 700,
+              color: "var(--color-accent)",
+              textTransform: "uppercase", letterSpacing: "0.06em",
+            }}>
+              {event.tag}
+            </div>
           </div>
 
-          <p style={{ fontSize: 12, color: "var(--color-text-muted)", fontWeight: 500, marginBottom: 6 }}>
-            {event.organizer}
-          </p>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--color-text-primary)", lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
+          {/* ② Title */}
+          <h1 style={{
+            fontSize: 28, fontWeight: 800,
+            color: "var(--color-text-primary)",
+            lineHeight: 1.15, letterSpacing: "-0.03em",
+            marginBottom: 14,
+          }}>
             {event.title}
           </h1>
 
-          {/* 2-col meta tiles — Date | Time */}
+          {/* ③ Subtitle chips + attendees pill */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 26 }}>
+            {subtitleChips.map((chip) => (
+              <span key={chip} style={{
+                background: "var(--color-bg-surface)",
+                border: "1px solid var(--color-border)",
+                borderRadius: 9999, padding: "4px 12px",
+                fontSize: 11, fontWeight: 600,
+                color: "var(--color-text-secondary)",
+              }}>
+                {chip}
+              </span>
+            ))}
+            <span style={{
+              display: "flex", alignItems: "center", gap: 5,
+              background: "var(--color-bg-surface)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 9999, padding: "4px 12px",
+              fontSize: 11, fontWeight: 600,
+              color: "var(--color-text-secondary)",
+            }}>
+              <Users size={11} strokeWidth={2} />
+              {event.attendees.toLocaleString("en-IN")} going
+            </span>
+          </div>
+
+          {/* ④ Date | Time */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
             <MetaBox icon={<Calendar size={16} color="var(--color-accent)" />} label="Date" value={event.date} />
             <MetaBox icon={<Clock    size={16} color="var(--color-accent)" />} label="Time" value={event.time} />
           </div>
 
-          {/* Location row — full width with arrow */}
+          {/* ⑤ Venue row */}
           <div style={{
             background: "var(--color-bg-surface)",
             border: "1px solid var(--color-border-subtle)",
             borderRadius: "var(--radius-lg)", padding: "14px 16px",
             display: "flex", alignItems: "center", justifyContent: "space-between",
-            marginBottom: 20,
+            marginBottom: 26,
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{
@@ -133,15 +179,50 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
 
-          {/* Description */}
-          <div style={{ marginBottom: 20 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-primary)", marginBottom: 10 }}>About The Event</h2>
-            <p style={{ fontSize: 14, color: "var(--color-text-secondary)", lineHeight: 1.65 }}>
-              {event.description}
+          {/* ⑥ About section with pull-quote */}
+          <div style={{ marginBottom: 26 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }}>
+              About
+            </p>
+
+            {pullQuote && (
+              <div style={{
+                borderLeft: "3px solid var(--color-accent)",
+                paddingLeft: 14, marginBottom: 14,
+              }}>
+                <p style={{
+                  fontSize: 15, fontWeight: 700,
+                  color: "var(--color-text-primary)",
+                  lineHeight: 1.55, fontStyle: "italic",
+                }}>
+                  &ldquo;{pullQuote}&rdquo;
+                </p>
+              </div>
+            )}
+
+            <p style={{ fontSize: 13.5, color: "var(--color-text-secondary)", lineHeight: 1.72 }}>
+              {bodyText}
             </p>
           </div>
 
-          {/* Map — real Google Maps embed */}
+          {/* ⑦ Know Before You Go */}
+          {(event.seats || event.section) && (
+            <div style={{ marginBottom: 26 }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
+                Know Before You Go
+              </p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {event.seats && (
+                  <InfoTile icon={<Ticket size={15} color="var(--color-accent)" />} label="Ticket" value={event.seats} />
+                )}
+                {event.section && (
+                  <InfoTile icon={<Layers size={15} color="var(--color-accent)" />} label="Area" value={event.section} />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ⑧ Map */}
           <div style={{
             borderRadius: "var(--radius-xl)", overflow: "hidden",
             height: 200,
@@ -163,7 +244,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>{/* end event-detail-scroll */}
       </div>{/* end event-detail-grid */}
 
-      {/* ── Sticky CTA bar (mobile: fixed bottom; desktop: absolute inside scroll panel) ── */}
+      {/* ── Sticky CTA bar ── */}
       <div style={{
         position: "fixed", bottom: 0, left: 0, right: 0,
         zIndex: 60,
@@ -179,7 +260,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           display: "flex", alignItems: "center", gap: 12,
           boxShadow: "0 -4px 32px rgba(0,0,0,0.18), 0 0 0 1px var(--color-border-subtle)",
         }}>
-          {/* Heart / save button */}
           <button type="button" style={{
             width: 50, height: 50, borderRadius: 14,
             background: "var(--color-bg-card)",
@@ -191,7 +271,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <Heart size={20} color="var(--color-accent)" strokeWidth={2} />
           </button>
 
-          {/* Price */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ fontSize: 10, color: "var(--color-text-muted)", fontWeight: 500, marginBottom: 1 }}>Starts From</p>
             <p style={{ fontSize: 22, fontWeight: 800, color: "var(--color-text-primary)", letterSpacing: "-0.03em", lineHeight: 1 }}>
@@ -199,7 +278,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </p>
           </div>
 
-          {/* Book Now */}
           <Link
             href={`/checkout/${event.id}`}
             style={{
@@ -239,3 +317,27 @@ function MetaBox({ icon, label, value }: { icon: React.ReactNode; label: string;
   );
 }
 
+function InfoTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div style={{
+      background: "var(--color-bg-surface)",
+      border: "1px solid var(--color-border-subtle)",
+      borderRadius: "var(--radius-lg)", padding: "14px",
+      display: "flex", alignItems: "flex-start", gap: 10,
+    }}>
+      <div style={{
+        width: 30, height: 30, borderRadius: 8,
+        background: "var(--color-accent-dim)",
+        border: "1px solid var(--color-border-active)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0, marginTop: 1,
+      }}>
+        {icon}
+      </div>
+      <div>
+        <p style={{ fontSize: 10, color: "var(--color-text-muted)", fontWeight: 500, marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</p>
+        <p style={{ fontSize: 12, fontWeight: 700, color: "var(--color-text-primary)" }}>{value}</p>
+      </div>
+    </div>
+  );
+}
