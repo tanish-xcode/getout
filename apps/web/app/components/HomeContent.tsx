@@ -53,22 +53,6 @@ export default function HomeContent() {
 
   const activeFilterCount = (sortBy !== "date" ? 1 : 0) + (dateFilter !== "any" ? 1 : 0) + (priceFilter !== "any" ? 1 : 0);
 
-  // Derive which quick-filter chip is active from existing filter state
-  const activeQuickFilter =
-    priceFilter === "any"       && dateFilter === "any"       ? "all" :
-    priceFilter === "any"       && dateFilter === "this-week" ? "weekend" :
-    priceFilter === "free"      && dateFilter === "any"       ? "free" :
-    priceFilter === "under-500" && dateFilter === "any"       ? "u500" :
-    priceFilter === "under-1000"&& dateFilter === "any"       ? "u1000" : null;
-
-  function applyQuickFilter(qf: string) {
-    if (qf === "all")     { setPriceFilter("any");        setDateFilter("any"); }
-    if (qf === "weekend") { setPriceFilter("any");        setDateFilter("this-week"); }
-    if (qf === "free")    { setPriceFilter("free");       setDateFilter("any"); }
-    if (qf === "u500")    { setPriceFilter("under-500");  setDateFilter("any"); }
-    if (qf === "u1000")   { setPriceFilter("under-1000"); setDateFilter("any"); }
-  }
-
   const filtered = getEventsByCategory(activeCategory)
     .filter((e) =>
       search.trim() === ""
@@ -293,30 +277,6 @@ export default function HomeContent() {
         })}
       </div>
 
-      {/* ── Quick filters — desktop only ──────────────────────── */}
-      <div className="dc desktop-quick-filters">
-        {[
-          { label: "All Events",    qf: "all"     },
-          { label: "This Weekend",  qf: "weekend" },
-          { label: "Free Entry",    qf: "free"    },
-          { label: "Under ₹500",   qf: "u500"    },
-          { label: "Under ₹1,000", qf: "u1000"   },
-        ].map(({ label, qf }) => {
-          const active = activeQuickFilter === qf;
-          return (
-            <button key={qf} onClick={() => applyQuickFilter(qf)} style={{
-              padding: "7px 18px", borderRadius: 9999,
-              fontSize: 12, fontWeight: 600,
-              background: active ? "var(--color-accent)" : "var(--color-bg-card)",
-              color: active ? "#fff" : "var(--color-text-secondary)",
-              border: active ? "1.5px solid var(--color-accent)" : "1px solid var(--color-border)",
-              cursor: "pointer", transition: "all 150ms ease", fontFamily: "inherit",
-              boxShadow: active ? "0 0 14px rgba(242,107,58,0.35)" : "none",
-              whiteSpace: "nowrap",
-            }}>{label}</button>
-          );
-        })}
-      </div>
 
       {/* ── Main content: Featured + Popular ─────────────────── */}
       <div className="dc home-main-grid" style={{ marginTop: 20 }}>
