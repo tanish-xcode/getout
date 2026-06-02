@@ -138,7 +138,8 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* ── Ticket type ────────────────────────────────── */}
+        {/* ── Ticket type / Quantity / Order summary — non-EventDesk only ── */}
+        {!isBhajan && (<>
         <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 12 }}>Select Ticket Type</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
           {TICKET_TYPES.map((type, i) => {
@@ -250,6 +251,7 @@ export default function CheckoutPage() {
             </span>
           </div>
         </div>
+        </>)}
 
         {/* ── Checkout ── */}
         {isBhajan ? (
