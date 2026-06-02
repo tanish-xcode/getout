@@ -54,7 +54,7 @@ export const events: Event[] = [
     attendees: 1800,
     tag: "Nightlife",
     category: "Nightlife",
-    description: "Close your eyes. Is that a tabla or a kick drum? At Bhajan Clubbing Night, ancient devotion and deep electronic sound collapse into one unforgettable experience. Classic kirtans ride pulsing basslines, sacred hymns hit on the drop, and for one night only, 10D The Club becomes a temple. Your gods approve. Dress code: sacred chaos.",
+    description: "Bhajan Clubbing Night is a one-of-a-kind experience at 10D The Club, Jubilee Hills — blending traditional Indian devotional music with deep electronic sounds. Classic kirtans are layered over pulsing basslines, sacred hymns are reimagined for the dance floor, and the result is an atmosphere unlike anything else in the city. Whether you're here for the music, the energy, or just something different, this is a night worth showing up for.",
     organizer: "Get Out",
     featured: true,
     seats: "General Entry",
