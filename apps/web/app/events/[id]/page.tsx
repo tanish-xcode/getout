@@ -21,8 +21,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <div className="page-root" style={{ paddingBottom: 0, paddingTop: 0, minHeight: "unset" }}>
       <div className="event-detail-grid">
 
-        {/* ── Full-viewport hero image ──────────────────────────── */}
-        <div className="event-detail-image" style={{ position: "relative", height: "100dvh" }}>
+        {/* ── Full-width banner image ───────────────────────────── */}
+        <div className="event-detail-image" style={{ position: "relative", height: "56vh" }}>
           <img
             src={event.image}
             alt={event.title}
@@ -32,10 +32,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           {/* Gradient overlay */}
           <div className="event-img-overlay" style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(to bottom, rgba(10,10,14,0.45) 0%, rgba(10,10,14,0) 35%, rgba(10,10,14,0.75) 65%, rgba(10,10,14,0.95) 100%)",
+            background: "linear-gradient(to bottom, rgba(10,10,14,0.40) 0%, rgba(10,10,14,0) 40%, rgba(10,10,14,0.55) 100%)",
           }} />
 
-          {/* Back & action buttons — top */}
+          {/* Back & action buttons */}
           <div style={{ position: "absolute", top: 52, left: 20, right: 20, display: "flex", justifyContent: "space-between", zIndex: 2 }}>
             <Link href="/" style={{
               width: 40, height: 40, borderRadius: 9999,
@@ -65,75 +65,67 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
 
-          {/* Tag + Title + Chips — bottom of hero */}
+          {/* Tag chip — bottom-left of image */}
           <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0,
-            padding: "0 24px 108px",
-            zIndex: 2,
+            position: "absolute", bottom: 20, left: 20, zIndex: 2,
+            background: "var(--color-accent)", borderRadius: 9999,
+            padding: "4px 14px", fontSize: 10, fontWeight: 700,
+            color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
           }}>
-            {/* Tag */}
-            <div style={{
-              display: "inline-block",
-              background: "var(--color-accent)", borderRadius: 9999,
-              padding: "4px 14px", fontSize: 10, fontWeight: 700,
-              color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
-              marginBottom: 12,
-            }}>
-              {event.tag}
-            </div>
-
-            {/* Title */}
-            <h1 style={{
-              fontSize: 34, fontWeight: 800, color: "#fff",
-              lineHeight: 1.1, letterSpacing: "-0.03em",
-              marginBottom: 14,
-              textShadow: "0 2px 20px rgba(0,0,0,0.4)",
-            }}>
-              {event.title}
-            </h1>
-
-            {/* Subtitle chips + attendees */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-              {subtitleChips.map((chip) => (
-                <span key={chip} style={{
-                  background: "rgba(255,255,255,0.14)",
-                  border: "1px solid rgba(255,255,255,0.22)",
-                  backdropFilter: "blur(8px)",
-                  borderRadius: 9999, padding: "4px 12px",
-                  fontSize: 11, fontWeight: 600, color: "#fff",
-                }}>
-                  {chip}
-                </span>
-              ))}
-              <span style={{
-                display: "flex", alignItems: "center", gap: 5,
-                background: "rgba(255,255,255,0.14)",
-                border: "1px solid rgba(255,255,255,0.22)",
-                backdropFilter: "blur(8px)",
-                borderRadius: 9999, padding: "4px 12px",
-                fontSize: 11, fontWeight: 600, color: "#fff",
-              }}>
-                <Users size={11} strokeWidth={2} />
-                {event.attendees.toLocaleString("en-IN")} going
-              </span>
-            </div>
+            {event.tag}
           </div>
         </div>
 
-        {/* ── Details — scroll below the hero ──────────────────── */}
-        <div className="event-detail-scroll" style={{ padding: "28px 20px 40px" }}>
+        {/* ── All details, scrolling naturally below the image ─── */}
+        <div className="event-detail-scroll" style={{ padding: "24px 20px 120px" }}>
+
+          {/* Title */}
+          <h1 style={{
+            fontSize: 26, fontWeight: 800,
+            color: "var(--color-text-primary)",
+            lineHeight: 1.15, letterSpacing: "-0.03em",
+            marginBottom: 10,
+          }}>
+            {event.title}
+          </h1>
+
+          {/* Subtitle chips + attendees */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20 }}>
+            {subtitleChips.map((chip) => (
+              <span key={chip} style={{
+                background: "var(--color-bg-surface)",
+                border: "1px solid var(--color-border)",
+                borderRadius: 9999, padding: "4px 12px",
+                fontSize: 11, fontWeight: 600,
+                color: "var(--color-text-secondary)",
+              }}>
+                {chip}
+              </span>
+            ))}
+            <span style={{
+              display: "flex", alignItems: "center", gap: 5,
+              background: "var(--color-bg-surface)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 9999, padding: "4px 12px",
+              fontSize: 11, fontWeight: 600,
+              color: "var(--color-text-secondary)",
+            }}>
+              <Users size={11} strokeWidth={2} />
+              {event.attendees.toLocaleString("en-IN")} going
+            </span>
+          </div>
 
           {/* Organizer row */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 22 }}>
             <div style={{
-              width: 28, height: 28, borderRadius: 8,
+              width: 26, height: 26, borderRadius: 7,
               background: "var(--color-accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0,
             }}>
-              <span style={{ fontSize: 8, fontWeight: 800, color: "#fff", letterSpacing: "0.02em" }}>GO</span>
+              <span style={{ fontSize: 7, fontWeight: 800, color: "#fff", letterSpacing: "0.02em" }}>GO</span>
             </div>
-            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-muted)" }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "var(--color-text-muted)" }}>
               Presented by <strong style={{ color: "var(--color-text-secondary)" }}>{event.organizer}</strong>
             </span>
           </div>
@@ -144,13 +136,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <MetaBox icon={<Clock    size={16} color="var(--color-accent)" />} label="Time" value={event.time} />
           </div>
 
-          {/* Venue row */}
+          {/* Venue */}
           <div style={{
             background: "var(--color-bg-surface)",
             border: "1px solid var(--color-border-subtle)",
             borderRadius: "var(--radius-lg)", padding: "14px 16px",
             display: "flex", alignItems: "center", justifyContent: "space-between",
-            marginBottom: 28,
+            marginBottom: 26,
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{
@@ -177,7 +169,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
 
           {/* About */}
-          <div style={{ marginBottom: 28 }}>
+          <div style={{ marginBottom: 26 }}>
             <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }}>
               About
             </p>
@@ -195,7 +187,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
           {/* Know Before You Go */}
           {(event.seats || event.section) && (
-            <div style={{ marginBottom: 28 }}>
+            <div style={{ marginBottom: 26 }}>
               <p style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
                 Know Before You Go
               </p>
@@ -215,7 +207,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             borderRadius: "var(--radius-xl)", overflow: "hidden",
             height: 200,
             border: "1px solid var(--color-border-subtle)",
-            marginBottom: 28,
           }}>
             <iframe
               title="Event location"
