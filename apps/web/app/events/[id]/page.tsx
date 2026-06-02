@@ -32,7 +32,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           {/* Gradient overlay */}
           <div className="event-img-overlay" style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(to bottom, rgba(10,10,14,0.40) 0%, rgba(10,10,14,0) 40%, rgba(10,10,14,0.55) 100%)",
+            background: "linear-gradient(to bottom, rgba(10,10,14,0.35) 0%, rgba(10,10,14,0) 30%, rgba(10,10,14,0.75) 65%, rgba(10,10,14,0.95) 100%)",
           }} />
 
           {/* Back & action buttons */}
@@ -65,55 +65,62 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
 
-          {/* Tag chip — bottom-left of image */}
+          {/* Tag + Title + Chips — bottom-left of image */}
           <div style={{
-            position: "absolute", bottom: 20, left: 20, zIndex: 2,
-            background: "var(--color-accent)", borderRadius: 9999,
-            padding: "4px 14px", fontSize: 10, fontWeight: 700,
-            color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
+            position: "absolute", bottom: 0, left: 0, right: 0,
+            padding: "0 20px 28px", zIndex: 2,
           }}>
-            {event.tag}
+            {/* Tag */}
+            <div style={{
+              display: "inline-block",
+              background: "var(--color-accent)", borderRadius: 9999,
+              padding: "3px 12px", fontSize: 10, fontWeight: 700,
+              color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
+              marginBottom: 10,
+            }}>
+              {event.tag}
+            </div>
+
+            {/* Title */}
+            <h1 style={{
+              fontSize: 28, fontWeight: 800, color: "#fff",
+              lineHeight: 1.1, letterSpacing: "-0.03em",
+              marginBottom: 12,
+              textShadow: "0 2px 16px rgba(0,0,0,0.3)",
+            }}>
+              {event.title}
+            </h1>
+
+            {/* Subtitle chips + attendees */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {subtitleChips.map((chip) => (
+                <span key={chip} style={{
+                  background: "rgba(255,255,255,0.14)",
+                  border: "1px solid rgba(255,255,255,0.22)",
+                  backdropFilter: "blur(8px)",
+                  borderRadius: 9999, padding: "4px 12px",
+                  fontSize: 11, fontWeight: 600, color: "#fff",
+                }}>
+                  {chip}
+                </span>
+              ))}
+              <span style={{
+                display: "flex", alignItems: "center", gap: 5,
+                background: "rgba(255,255,255,0.14)",
+                border: "1px solid rgba(255,255,255,0.22)",
+                backdropFilter: "blur(8px)",
+                borderRadius: 9999, padding: "4px 12px",
+                fontSize: 11, fontWeight: 600, color: "#fff",
+              }}>
+                <Users size={11} strokeWidth={2} />
+                {event.attendees.toLocaleString("en-IN")} going
+              </span>
+            </div>
           </div>
         </div>
 
         {/* ── All details, scrolling naturally below the image ─── */}
         <div className="event-detail-scroll" style={{ padding: "24px 20px 120px" }}>
-
-          {/* Title */}
-          <h1 style={{
-            fontSize: 26, fontWeight: 800,
-            color: "var(--color-text-primary)",
-            lineHeight: 1.15, letterSpacing: "-0.03em",
-            marginBottom: 10,
-          }}>
-            {event.title}
-          </h1>
-
-          {/* Subtitle chips + attendees */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20 }}>
-            {subtitleChips.map((chip) => (
-              <span key={chip} style={{
-                background: "var(--color-bg-surface)",
-                border: "1px solid var(--color-border)",
-                borderRadius: 9999, padding: "4px 12px",
-                fontSize: 11, fontWeight: 600,
-                color: "var(--color-text-secondary)",
-              }}>
-                {chip}
-              </span>
-            ))}
-            <span style={{
-              display: "flex", alignItems: "center", gap: 5,
-              background: "var(--color-bg-surface)",
-              border: "1px solid var(--color-border)",
-              borderRadius: 9999, padding: "4px 12px",
-              fontSize: 11, fontWeight: 600,
-              color: "var(--color-text-secondary)",
-            }}>
-              <Users size={11} strokeWidth={2} />
-              {event.attendees.toLocaleString("en-IN")} going
-            </span>
-          </div>
 
           {/* Organizer row */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 22 }}>
