@@ -73,20 +73,24 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
       {/* ══ DESKTOP: cinematic hero (District-style) ════════════ */}
       <div className="event-desktop-hero">
-        {/* Blurred background */}
+        {/* Vivid blurred background */}
         <div style={{
-          position: "absolute", inset: "-40px", zIndex: 0,
+          position: "absolute", inset: "-60px", zIndex: 0,
           backgroundImage: `url("${event.image}")`,
           backgroundSize: "cover",
           backgroundPosition: event.imagePosition ?? "center",
-          filter: "blur(60px)",
-          opacity: 0.65,
-          transform: "scale(1.05)",
+          filter: "blur(80px) saturate(1.8) brightness(1.1)",
+          opacity: 0.6,
+          transform: "scale(1.08)",
         }} />
-        {/* Directional overlay — dark on text side, lighter on image side */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(110deg, rgba(4,4,10,0.97) 0%, rgba(4,4,10,0.88) 35%, rgba(4,4,10,0.50) 65%, rgba(4,4,10,0.22) 100%)", zIndex: 1 }} />
-        {/* Bottom fade into page */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to bottom, transparent, var(--color-bg-base))", zIndex: 2, pointerEvents: "none" }} />
+        {/* Directional dark overlay */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(115deg, rgba(2,2,8,0.97) 0%, rgba(2,2,8,0.90) 30%, rgba(2,2,8,0.55) 58%, rgba(2,2,8,0.12) 100%)" }} />
+        {/* Accent glow — top-left behind title */}
+        <div style={{ position: "absolute", top: -80, left: -60, width: 700, height: 700, zIndex: 1, background: "radial-gradient(circle, rgba(242,107,58,0.22) 0%, transparent 60%)", pointerEvents: "none" }} />
+        {/* Subtle dot-grid texture */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, backgroundImage: "radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
+        {/* Bottom fade */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 140, background: "linear-gradient(to bottom, transparent, var(--color-bg-base))", zIndex: 2, pointerEvents: "none" }} />
 
         {/* Nav */}
         <div style={{ position: "absolute", top: 20, left: 48, right: 48, display: "flex", justifyContent: "space-between", zIndex: 4 }}>
@@ -108,11 +112,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
           {/* ── Left ── */}
           <div className="event-hero-left">
-            <div style={{ display: "inline-block", background: "var(--color-accent)", borderRadius: 9999, padding: "4px 14px", fontSize: 10, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 18 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(242,107,58,0.18)", border: "1px solid rgba(242,107,58,0.45)", borderRadius: 9999, padding: "5px 16px", fontSize: 11, fontWeight: 700, color: "var(--color-accent)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 20, backdropFilter: "blur(8px)" }}>
+              <span style={{ width: 6, height: 6, borderRadius: 9999, background: "var(--color-accent)", display: "inline-block" }} />
               {event.tag}
             </div>
 
-            <h1 style={{ fontSize: 58, fontWeight: 800, color: "#fff", lineHeight: 1.0, letterSpacing: "-0.04em", marginBottom: 20, textShadow: "0 4px 40px rgba(0,0,0,0.4)" }}>
+            <h1 style={{ fontSize: 62, fontWeight: 800, color: "#fff", lineHeight: 0.98, letterSpacing: "-0.04em", marginBottom: 20, textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}>
               {event.title}
             </h1>
 
@@ -173,15 +178,28 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
 
           {/* ── Right: poster card ── */}
-          <div className="event-hero-right">
-            <picture>
+          <div className="event-hero-right" style={{ position: "relative" }}>
+            {/* Glow pool behind poster */}
+            <div style={{
+              position: "absolute", inset: "-30px", zIndex: 0,
+              background: "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(242,107,58,0.28) 0%, transparent 70%)",
+              filter: "blur(24px)",
+              pointerEvents: "none",
+            }} />
+            <picture style={{ position: "relative", zIndex: 1, display: "block" }}>
               {event.imageMobile && (
                 <source media="(max-width: 767px)" srcSet={event.imageMobile} />
               )}
               <img
                 src={event.image}
                 alt={event.title}
-                style={{ width: "100%", height: "auto", display: "block", borderRadius: 20, boxShadow: "0 40px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.08), 0 0 80px rgba(242,107,58,0.12)" }}
+                style={{
+                  width: "100%", height: "auto", display: "block",
+                  borderRadius: 20,
+                  transform: "rotate(-2deg) translateY(-6px)",
+                  boxShadow: "0 48px 120px rgba(0,0,0,0.80), 0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(242,107,58,0.18)",
+                  transition: "transform 300ms ease",
+                }}
               />
             </picture>
           </div>
