@@ -91,7 +91,7 @@ export const events: Event[] = [
     time: "7:00 PM",
     price: "₹500",
     priceNum: 500,
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80",
+    image: "/shiva bhajan.png",
     attendees: 679,
     tag: "Concert",
     category: "Concerts",
