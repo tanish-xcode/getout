@@ -71,7 +71,7 @@ export const events: Event[] = [
     time: "8:15 PM",
     price: "₹799",
     priceNum: 799,
-    image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&q=80",
+    image: "/paadu bros.png",
     attendees: 400,
     tag: "Concert",
     category: "Concerts",
