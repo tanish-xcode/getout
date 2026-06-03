@@ -492,13 +492,13 @@ input  { font-family: inherit; }
   .event-detail-image {
     position: relative !important;
     top: auto !important;
-    height: 480px !important;
-    overflow: hidden;
+    height: auto !important;
+    overflow: visible !important;
   }
   .event-detail-image img {
     width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+    height: auto !important;
+    display: block !important;
   }
   .event-detail-image .event-img-overlay {
     position: absolute;

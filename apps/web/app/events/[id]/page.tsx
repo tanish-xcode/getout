@@ -22,11 +22,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="event-detail-grid">
 
         {/* ── Full-width banner image ───────────────────────────── */}
-        <div className="event-detail-image" style={{ position: "relative", height: "48vh" }}>
+        <div className="event-detail-image" style={{ position: "relative" }}>
           <img
             src={event.image}
             alt={event.title}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: event.imagePosition ?? "center" }}
+            style={{ width: "100%", height: "auto", display: "block" }}
           />
 
           {/* Gradient overlay */}
