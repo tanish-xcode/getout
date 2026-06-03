@@ -9,6 +9,7 @@ export type Event = {
   price: string;
   priceNum: number;
   image: string;
+  imagePosition?: string;
   attendees: number;
   tag: string;
   category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Dining" | "Sports";
@@ -51,6 +52,7 @@ export const events: Event[] = [
     price: "₹1,200",
     priceNum: 1200,
     image: "/bhajan-clubbing.jpg",
+    imagePosition: "center 35%",
     attendees: 1800,
     tag: "Nightlife",
     category: "Nightlife",

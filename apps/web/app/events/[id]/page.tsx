@@ -26,7 +26,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           <img
             src={event.image}
             alt={event.title}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: event.imagePosition ?? "center" }}
           />
 
           {/* Gradient overlay */}

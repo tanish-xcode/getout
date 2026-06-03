@@ -499,7 +499,6 @@ input  { font-family: inherit; }
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center 35% !important;
   }
   .event-detail-image .event-img-overlay {
     position: absolute;
