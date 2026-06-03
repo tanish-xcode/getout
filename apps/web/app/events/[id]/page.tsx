@@ -108,7 +108,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
 
         {/* Split: left info | right poster */}
-        <div className="event-hero-split">
+        <div className="event-hero-split" style={event.portrait ? { gridTemplateColumns: "1fr 500px" } : undefined}>
 
           {/* ── Left ── */}
           <div className="event-hero-left">
