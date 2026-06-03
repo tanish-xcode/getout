@@ -318,6 +318,12 @@ input  { font-family: inherit; }
   padding: 20px 20px 0;
 }
 
+/* ─── Event detail: mobile/desktop section visibility ────────── */
+.event-mobile-banner { display: block; }
+.event-desktop-hero  { display: none;  }
+.event-mobile-meta   { display: block; }
+.event-mobile-cta    { display: block; }
+
 /* ─── Category card (icon block on mobile → filter chip on desktop) */
 .cat-card {
   flex-shrink: 0;
@@ -487,30 +493,40 @@ input  { font-family: inherit; }
     align-items: start;
   }
 
-  /* Event detail — full-width image, content scrolls below (same as mobile) */
-  .event-detail-grid { display: block; }
-  .event-detail-image {
-    position: relative !important;
-    top: auto !important;
-    height: auto !important;
-    overflow: visible !important;
+  /* Event detail — mobile banner hidden, desktop hero shown */
+  .event-mobile-banner { display: none !important; }
+  .event-mobile-meta   { display: none !important; }
+  .event-mobile-cta    { display: none !important; }
+
+  .event-desktop-hero {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 48px 72px;
   }
-  .event-detail-image img {
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-    object-fit: unset !important;
-    object-position: unset !important;
+
+  .event-hero-split {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 72px;
+    align-items: center;
+    padding-top: 48px;
   }
-  .event-detail-image .event-img-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(10,10,14,0.35) 0%, rgba(10,10,14,0) 40%, rgba(10,10,14,0.55) 100%) !important;
+
+  .event-hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
   .event-detail-scroll {
     max-height: none !important;
     overflow-y: visible !important;
-    padding: 32px 48px !important;
+    padding: 40px 48px !important;
     max-width: 800px;
     margin: 0 auto;
   }
