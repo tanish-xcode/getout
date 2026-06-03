@@ -507,14 +507,14 @@ input  { font-family: inherit; }
 
   .event-hero-split {
     position: relative;
-    z-index: 2;
-    max-width: 1100px;
+    z-index: 3;
+    max-width: 1160px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 72px;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
     align-items: center;
-    padding-top: 48px;
+    padding-top: 52px;
   }
 
   .event-hero-right {

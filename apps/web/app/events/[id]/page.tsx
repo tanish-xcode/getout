@@ -83,7 +83,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           opacity: 0.65,
           transform: "scale(1.05)",
         }} />
-        <div style={{ position: "absolute", inset: 0, background: "rgba(4,4,10,0.62)", zIndex: 1 }} />
+        {/* Directional overlay — dark on text side, lighter on image side */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(110deg, rgba(4,4,10,0.97) 0%, rgba(4,4,10,0.88) 35%, rgba(4,4,10,0.50) 65%, rgba(4,4,10,0.22) 100%)", zIndex: 1 }} />
+        {/* Bottom fade into page */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to bottom, transparent, var(--color-bg-base))", zIndex: 2, pointerEvents: "none" }} />
 
         {/* Nav */}
         <div style={{ position: "absolute", top: 20, left: 48, right: 48, display: "flex", justifyContent: "space-between", zIndex: 4 }}>
@@ -109,11 +112,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               {event.tag}
             </div>
 
-            <h1 style={{ fontSize: 52, fontWeight: 800, color: "#fff", lineHeight: 1.0, letterSpacing: "-0.04em", marginBottom: 20 }}>
+            <h1 style={{ fontSize: 58, fontWeight: 800, color: "#fff", lineHeight: 1.0, letterSpacing: "-0.04em", marginBottom: 20, textShadow: "0 4px 40px rgba(0,0,0,0.4)" }}>
               {event.title}
             </h1>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 24 }}>
               {subtitleChips.map((chip) => (
                 <span key={chip} style={{ background: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.16)", backdropFilter: "blur(8px)", borderRadius: 9999, padding: "5px 14px", fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.80)" }}>
                   {chip}
@@ -125,45 +128,47 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               </span>
             </div>
 
+            {/* Accent divider */}
+            <div style={{ width: 48, height: 3, background: "var(--color-accent)", borderRadius: 2, marginBottom: 24, boxShadow: "0 0 12px rgba(242,107,58,0.6)" }} />
+
             {/* Organizer */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 22 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
               <div style={{ width: 26, height: 26, borderRadius: 7, background: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <span style={{ fontSize: 7, fontWeight: 800, color: "#fff" }}>GO</span>
               </div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.55)" }}>
+              <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.50)" }}>
                 Presented by <strong style={{ color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>{event.organizer}</strong>
               </span>
             </div>
 
-            {/* Date · Time · Venue */}
-            <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 14, flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            {/* Meta chips */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 36 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "8px 14px" }}>
                 <Calendar size={14} color="var(--color-accent)" />
-                <span style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.date}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.date}</span>
               </div>
-              <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 18 }}>·</span>
-              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "8px 14px" }}>
                 <Clock size={14} color="var(--color-accent)" />
-                <span style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.time}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.time}</span>
               </div>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 36 }}>
-              <MapPin size={14} color="var(--color-accent)" />
-              <span style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.location}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "8px 14px" }}>
+                <MapPin size={14} color="var(--color-accent)" />
+                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{event.location}</span>
+              </div>
             </div>
 
             {/* Book Now */}
             <Link href={`/checkout/${event.id}`} style={{
-              display: "inline-flex", alignItems: "center",
+              display: "inline-flex", alignItems: "center", gap: 10,
               background: "var(--color-accent)",
               color: "#fff", borderRadius: 14,
-              padding: "0 36px", height: 54,
-              fontSize: 16, fontWeight: 800,
+              padding: "0 40px", height: 58,
+              fontSize: 17, fontWeight: 800,
               textDecoration: "none",
-              boxShadow: "0 0 40px rgba(242,107,58,0.55)",
+              boxShadow: "0 0 48px rgba(242,107,58,0.60), 0 8px 32px rgba(242,107,58,0.30)",
               letterSpacing: "-0.01em",
             }}>
-              Book Now &nbsp;—&nbsp; {event.price}
+              Book Now &nbsp;·&nbsp; {event.price}
             </Link>
           </div>
 
@@ -176,7 +181,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <img
                 src={event.image}
                 alt={event.title}
-                style={{ width: "100%", height: "auto", display: "block", borderRadius: 18, boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06)" }}
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: 20, boxShadow: "0 40px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.08), 0 0 80px rgba(242,107,58,0.12)" }}
               />
             </picture>
           </div>
