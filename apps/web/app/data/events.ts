@@ -24,26 +24,6 @@ export type Event = {
 
 export const events: Event[] = [
   {
-    id: "ai-global-summit",
-    title: "AI Global Leadership Future Summit",
-    subtitle: "Featured · Conference",
-    location: "Hyderabad International Convention Centre",
-    city: "Hyderabad",
-    date: "25 June 2026",
-    time: "10:00 AM",
-    price: "₹2,500",
-    priceNum: 2500,
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
-    attendees: 3200,
-    tag: "Conference",
-    category: "Conferences",
-    description: "AI Global Leadership Future Summit unites global leaders to explore innovation, share insights, and shape the future of technology worldwide. Featuring keynotes from top CEOs, live demos, and interactive workshops.",
-    organizer: "TechWorld India",
-    featured: true,
-    seats: "Section A · Row 3",
-    section: "General",
-  },
-  {
     id: "paata-saala",
     title: "Paata Shala",
     subtitle: "Telugu Folk · Live Music · All Ages",
