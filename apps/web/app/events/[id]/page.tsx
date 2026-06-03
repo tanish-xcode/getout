@@ -80,10 +80,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           backgroundSize: "cover",
           backgroundPosition: event.imagePosition ?? "center",
           filter: "blur(60px)",
-          opacity: 0.22,
+          opacity: 0.65,
           transform: "scale(1.05)",
         }} />
-        <div style={{ position: "absolute", inset: 0, background: "rgba(4,4,10,0.90)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(4,4,10,0.62)", zIndex: 1 }} />
 
         {/* Nav */}
         <div style={{ position: "absolute", top: 20, left: 48, right: 48, display: "flex", justifyContent: "space-between", zIndex: 4 }}>
