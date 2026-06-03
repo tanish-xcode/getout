@@ -62,7 +62,7 @@ export const events: Event[] = [
   },
   {
     id: "paata-saala",
-    title: "Paata Saala",
+    title: "Paata Shala",
     subtitle: "Telugu Folk · Live Music · All Ages",
     location: "Gachibowli Indoor Stadium",
     city: "Hyderabad",
@@ -70,7 +70,7 @@ export const events: Event[] = [
     time: "5:45 PM",
     price: "₹150",
     priceNum: 150,
-    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80",
+    image: "/paata-shala.jpg",
     attendees: 5000,
     tag: "Concert",
     category: "Concerts",
