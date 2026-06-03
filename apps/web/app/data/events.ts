@@ -11,6 +11,7 @@ export type Event = {
   image: string;
   imageMobile?: string;
   imagePosition?: string;
+  cropDesktop?: boolean;
   attendees: number;
   tag: string;
   category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Dining" | "Sports";
@@ -92,6 +93,7 @@ export const events: Event[] = [
     price: "₹500",
     priceNum: 500,
     image: "/shiva bhajan.png",
+    cropDesktop: true,
     attendees: 679,
     tag: "Concert",
     category: "Concerts",

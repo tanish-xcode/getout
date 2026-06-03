@@ -22,7 +22,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="event-detail-grid">
 
         {/* ── Full-width banner image ───────────────────────────── */}
-        <div className="event-detail-image" style={{ position: "relative" }}>
+        <div className={`event-detail-image${event.cropDesktop ? " crop-top" : ""}`} style={{ position: "relative" }}>
           <picture>
             {event.imageMobile && (
               <source media="(max-width: 767px)" srcSet={event.imageMobile} />

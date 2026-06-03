@@ -513,6 +513,17 @@ input  { font-family: inherit; }
     margin: 0 auto;
   }
 
+  /* Event banner: show top half only on desktop (portrait posters) */
+  .event-detail-image.crop-top {
+    height: 520px !important;
+    overflow: hidden !important;
+  }
+  .event-detail-image.crop-top img {
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+  }
+
   /* Narrow centered pages (checkout, ticket detail, profile, saved) */
   .page-narrow {
     max-width: 720px;
