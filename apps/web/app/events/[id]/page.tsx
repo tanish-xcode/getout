@@ -108,7 +108,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
 
         {/* Split: left info | right poster */}
-        <div className="event-hero-split" style={event.portrait ? { gridTemplateColumns: "1fr 500px" } : undefined}>
+        <div className="event-hero-split" style={{ gridTemplateColumns: event.portrait ? "1fr 460px" : "1fr 560px" }}>
 
           {/* ── Left ── */}
           <div className="event-hero-left">
@@ -194,7 +194,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 src={event.image}
                 alt={event.title}
                 style={{
-                  width: "100%", height: "auto", display: "block",
+                  width: "100%",
+                  height: event.portrait ? "auto" : 440,
+                  objectFit: event.portrait ? "unset" : "cover",
+                  display: "block",
                   borderRadius: 20,
                   transform: "rotate(-2deg) translateY(-6px)",
                   boxShadow: "0 48px 120px rgba(0,0,0,0.80), 0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(242,107,58,0.18)",
