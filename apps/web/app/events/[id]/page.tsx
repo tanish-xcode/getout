@@ -22,7 +22,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="event-detail-grid">
 
         {/* ── Full-width banner image ───────────────────────────── */}
-        <div className="event-detail-image" style={{ position: "relative", height: "56vh" }}>
+        <div className="event-detail-image" style={{ position: "relative", height: "48vh" }}>
           <img
             src={event.image}
             alt={event.title}

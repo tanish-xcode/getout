@@ -492,7 +492,7 @@ input  { font-family: inherit; }
   .event-detail-image {
     position: relative !important;
     top: auto !important;
-    height: 62vh !important;
+    height: 480px !important;
     overflow: hidden;
   }
   .event-detail-image img {
