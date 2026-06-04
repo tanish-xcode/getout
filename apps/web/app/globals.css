@@ -490,7 +490,12 @@ input  { font-family: inherit; }
     display: grid;
     grid-template-columns: 3fr 2fr;
     gap: 32px;
-    align-items: start;
+    align-items: stretch;
+  }
+  .home-main-grid > section {
+    height: 500px;
+    overflow-y: auto;
+    scrollbar-width: none;
   }
 
   /* Event detail — mobile banner hidden, desktop hero shown */
