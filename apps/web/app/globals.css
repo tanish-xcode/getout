@@ -91,7 +91,7 @@ input  { font-family: inherit; }
   max-width: 430px;
   margin: 0 auto;
   min-height: 100svh;
-  background-color: var(--color-bg-base);
+  background-color: transparent;
   position: relative;
 }
 
