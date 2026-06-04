@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   MapPin, ChevronRight, ArrowUpRight,
-  LayoutGrid, Mic2, Sparkles, Smile, Moon, Lightbulb, UtensilsCrossed, Trophy,
+  LayoutGrid, Mic2, Sparkles, Smile, Moon, Lightbulb, Trophy,
   Sun, Flower2, type LucideIcon,
 } from "lucide-react";
 import SearchBar from "./SearchBar";
@@ -22,7 +22,6 @@ const categoryConfig: Record<string, CatConfig> = {
   "Comedy":      { Icon: Smile,          color: "#F59E0B", glow: "rgba(245,158,11,0.45)"  },
   "Nightlife":   { Icon: Moon,           color: "#6366F1", glow: "rgba(99,102,241,0.45)"  },
   "Conferences": { Icon: Lightbulb,      color: "#3B82F6", glow: "rgba(59,130,246,0.45)"  },
-  "Dining":      { Icon: UtensilsCrossed,color: "#10B981", glow: "rgba(16,185,129,0.45)"  },
   "Sports":      { Icon: Trophy,         color: "#EF4444", glow: "rgba(239,68,68,0.45)"   },
   "Religious":   { Icon: Flower2,        color: "#F59E0B", glow: "rgba(245,158,11,0.45)"  },
 };

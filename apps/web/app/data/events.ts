@@ -14,7 +14,7 @@ export type Event = {
   portrait?: boolean;
   attendees: number;
   tag: string;
-  category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Dining" | "Sports" | "Religious";
+  category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Sports" | "Religious";
   description: string;
   organizer: string;
   featured?: boolean;
@@ -76,4 +76,4 @@ export function getEventsByCategory(category: string): Event[] {
   return events.filter((e) => e.category === category);
 }
 
-export const categories = ["All", "Concerts", "Festivals", "Comedy", "Nightlife", "Conferences", "Dining", "Sports", "Religious"] as const;
+export const categories = ["All", "Concerts", "Festivals", "Comedy", "Nightlife", "Conferences", "Sports", "Religious"] as const;
