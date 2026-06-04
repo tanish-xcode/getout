@@ -574,8 +574,8 @@ input  { font-family: inherit; }
   }
   .home-hero-right { display: block; }
 
-  /* ── Featured card: taller on desktop ────────────────── */
-  .featured-card-link { height: 500px; }
+  /* ── Featured card: taller on desktop, reset portrait ratio ── */
+  .featured-card-link { height: 500px; aspect-ratio: auto; }
 
   /* ── Remove inner padding (dc handles outer 48px) ────── */
   .featured-carousel-pad  { padding: 0; }
