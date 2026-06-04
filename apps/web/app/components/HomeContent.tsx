@@ -160,60 +160,63 @@ export default function HomeContent() {
             <SearchBar value={search} onChange={setSearch} onFilterOpen={() => setFilterOpen(true)} activeFilterCount={activeFilterCount} />
           </div>
 
-          {/* Right: featured event preview (desktop-only) */}
-          <div className="home-hero-right">
-            {featured[0] && (
-              <Link
-                href={`/events/${featured[0].id}`}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                <div style={{
-                  position: "relative", borderRadius: 24, overflow: "hidden",
-                  height: 260,
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.06)",
-                  transition: "transform 300ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 300ms ease",
-                  animation: "float-card 4s ease-in-out infinite",
-                }}>
-                  <img
-                    src={featured[0].image} alt={featured[0].title}
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                  />
+          {/* Right: featured event preview (desktop-only) — pinned to Band Sumiran */}
+          {(() => {
+            const heroEvent = featured.find(e => e.id === "band-sumiran-jamming-3") ?? featured[0];
+            return heroEvent ? (
+              <div className="home-hero-right">
+                <Link
+                  href={`/events/${heroEvent.id}`}
+                  style={{ display: "block", textDecoration: "none" }}
+                >
                   <div style={{
-                    position: "absolute", inset: 0,
-                    background: "linear-gradient(to bottom, rgba(10,10,14,0.10) 0%, rgba(10,10,14,0) 35%, rgba(10,10,14,0.88) 100%)",
-                  }} />
-                  <div style={{ position: "absolute", top: 14, left: 14 }}>
-                    <span style={{
-                      background: "var(--color-accent)", borderRadius: 9999,
-                      padding: "4px 12px", fontSize: 10, fontWeight: 800,
-                      color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
-                    }}>{featured[0].tag}</span>
-                  </div>
-                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px 18px" }}>
-                    <p style={{
-                      fontSize: 16, fontWeight: 800, color: "#fff",
-                      lineHeight: 1.25, marginBottom: 10, letterSpacing: "-0.02em",
-                    }}>
-                      {featured[0].title}
-                    </p>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.70)", fontWeight: 600 }}>
-                        📅 {featured[0].date} · {featured[0].city}
-                      </span>
+                    position: "relative", borderRadius: 24, overflow: "hidden",
+                    height: 260,
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.06)",
+                    transition: "transform 300ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 300ms ease",
+                    animation: "float-card 4s ease-in-out infinite",
+                  }}>
+                    <img
+                      src={heroEvent.image} alt={heroEvent.title}
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: "linear-gradient(to bottom, rgba(10,10,14,0.10) 0%, rgba(10,10,14,0) 35%, rgba(10,10,14,0.88) 100%)",
+                    }} />
+                    <div style={{ position: "absolute", top: 14, left: 14 }}>
                       <span style={{
-                        background: "var(--color-accent)", color: "#fff",
-                        borderRadius: 9999, padding: "6px 16px",
-                        fontSize: 12, fontWeight: 800,
-                        boxShadow: "0 0 16px rgba(242,107,58,0.50)",
+                        background: "var(--color-accent)", borderRadius: 9999,
+                        padding: "4px 12px", fontSize: 10, fontWeight: 800,
+                        color: "#fff", textTransform: "uppercase", letterSpacing: "0.07em",
+                      }}>{heroEvent.tag}</span>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px 18px" }}>
+                      <p style={{
+                        fontSize: 16, fontWeight: 800, color: "#fff",
+                        lineHeight: 1.25, marginBottom: 10, letterSpacing: "-0.02em",
                       }}>
-                        {featured[0].price}
-                      </span>
+                        {heroEvent.title}
+                      </p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.70)", fontWeight: 600 }}>
+                          📅 {heroEvent.date} · {heroEvent.city}
+                        </span>
+                        <span style={{
+                          background: "var(--color-accent)", color: "#fff",
+                          borderRadius: 9999, padding: "6px 16px",
+                          fontSize: 12, fontWeight: 800,
+                          boxShadow: "0 0 16px rgba(242,107,58,0.50)",
+                        }}>
+                          {heroEvent.price}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            )}
-          </div>
+                </Link>
+              </div>
+            ) : null;
+          })()}
 
         </div>
       </div>
