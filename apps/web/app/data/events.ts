@@ -14,7 +14,7 @@ export type Event = {
   portrait?: boolean;
   attendees: number;
   tag: string;
-  category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Dining" | "Sports";
+  category: "All" | "Concerts" | "Festivals" | "Comedy" | "Nightlife" | "Conferences" | "Dining" | "Sports" | "Religious";
   description: string;
   organizer: string;
   featured?: boolean;
@@ -38,7 +38,7 @@ export const events: Event[] = [
     featured: true,
     attendees: 679,
     tag: "Concert",
-    category: "Concerts",
+    category: "Religious",
     description: "Bhajan Karo presents a special Shiva Night at TGRTC Kalabhavan, featuring the renowned vocalist Gajendra Pratap Singh. An evening of powerful devotional music dedicated to Lord Shiva — from deep classical bhajans to high-energy renditions that fill the hall with divine energy. Come as you are, leave transformed.",
     organizer: "Get Out",
     seats: "Tiered Seating",
@@ -59,7 +59,7 @@ export const events: Event[] = [
     featured: true,
     attendees: 200,
     tag: "Concert",
-    category: "Concerts",
+    category: "Religious",
     description: "The third edition of Band Sumiran's signature Bhajan Jamming series returns to Rangbhoomi Spaces & Events. An intimate evening of live bhajan performances where the band blends traditional devotional music with spontaneous jamming and improvisation — expect raw energy, heartfelt renditions, and a crowd that sings along.",
     organizer: "Get Out",
     seats: "General Entry",
@@ -76,4 +76,4 @@ export function getEventsByCategory(category: string): Event[] {
   return events.filter((e) => e.category === category);
 }
 
-export const categories = ["All", "Concerts", "Festivals", "Comedy", "Nightlife", "Conferences", "Dining", "Sports"] as const;
+export const categories = ["All", "Concerts", "Festivals", "Comedy", "Nightlife", "Conferences", "Dining", "Sports", "Religious"] as const;
