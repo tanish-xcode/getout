@@ -66,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DesktopNav />
 
           <div className="mobile-container">
+            {/* Colour blobs */}
             <div style={{
               position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
               background: [
@@ -73,6 +74,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "radial-gradient(ellipse 70%  80% at -8% 50%,  rgba(236,72,153,0.07) 0%, transparent 55%)",
                 "radial-gradient(ellipse 80%  50% at 55% 105%, rgba(242,107,58,0.09) 0%, transparent 55%)",
               ].join(", "),
+            }} />
+            {/* Dot-grid texture — matches event detail pages */}
+            <div style={{
+              position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
             }} />
 
             <div className="content-frame" style={{ position: "relative", zIndex: 1 }}>
