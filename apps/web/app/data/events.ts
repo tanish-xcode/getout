@@ -54,7 +54,7 @@ export const events: Event[] = [
     time: "6:30 PM",
     price: "₹449",
     priceNum: 449,
-    image: "/bhajan-jamming.png",
+    image: "/bhajan-clubbing.jpg",
     portrait: true,
     featured: true,
     attendees: 200,
