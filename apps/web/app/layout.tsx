@@ -78,8 +78,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* Dot-grid texture — matches event detail pages */}
             <div style={{
               position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
-              backgroundImage: "radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px)",
-              backgroundSize: "28px 28px",
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
             }} />
 
             <div className="content-frame" style={{ position: "relative", zIndex: 1 }}>
